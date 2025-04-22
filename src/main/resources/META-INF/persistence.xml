@@ -1,0 +1,39 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                                 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+
+    <persistence-unit name="punit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+
+        <properties>
+            <!-- JDBC driver (optional, JPA may pick it up automatically) -->
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.h2.Driver"/>
+
+            <!-- Point at your TCP‑server database, in your home dir, and allow other JVMs -->
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:h2:tcp://localhost:9092/~/h2db;SCHEMA=APP;AUTO_SERVER=TRUE"/>
+
+            <!-- The app user you created -->
+            <property name="javax.persistence.jdbc.user" value="APP_USER"/>
+            <property name="javax.persistence.jdbc.password" value="APP_USER"/>
+
+            <!-- Hibernate dialect for H2 -->
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.H2Dialect"/>
+
+            <!-- Let Hibernate manage your schema (create/alter tables) -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Optional: pretty‑print the SQL in your console -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+
+
+
+</persistence>

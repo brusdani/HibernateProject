@@ -1,0 +1,34 @@
+2025-04-22 01:26:22.866810+02:00 jdbc[3]: 
+org.h2.message.DbException: Schema "APP" not found [90079-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.engine.Database.getSchema(Database.java:1578)
+	at org.h2.command.dml.Set.update(Set.java:397)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.engine.Engine.openSession(Engine.java:259)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:175)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "APP" not found; SQL statement:
+SET SCHEMA APP [90079-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 10 more
+2025-04-22 01:31:04.643897+02:00 jdbc[3]: 
+org.h2.message.DbException: Schema "APP" not found [90079-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.engine.Database.getSchema(Database.java:1578)
+	at org.h2.command.dml.Set.update(Set.java:397)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.engine.Engine.openSession(Engine.java:259)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:175)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "APP" not found; SQL statement:
+SET SCHEMA APP [90079-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 10 more
