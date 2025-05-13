@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.RegistrationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.RegistrationController">
    <children>
       <TextField fx:id="usernameField" layoutX="215.0" layoutY="104.0" />
       <TextField fx:id="passwordField" layoutX="216.0" layoutY="165.0" />
@@ -14,5 +14,6 @@
       <Label layoutX="215.0" layoutY="87.0" prefHeight="18.0" prefWidth="82.0" text="username" />
       <Label layoutX="215.0" layoutY="146.0" prefHeight="18.0" prefWidth="82.0" text="password" />
       <Label layoutX="217.0" layoutY="200.0" prefHeight="18.0" prefWidth="82.0" text="email" />
+      <Button layoutX="413.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginButtonClick" text="Login" />
    </children>
 </AnchorPane>

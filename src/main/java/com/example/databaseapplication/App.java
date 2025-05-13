@@ -2,10 +2,8 @@ package com.example.databaseapplication;
 
 import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.model.UserType;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+
+import javax.persistence.*;
 
 /**
  * Application-level service for managing Users via JPA.
@@ -88,6 +86,52 @@ public class App {
                 .setParameter("login", login)
                 .getSingleResult();
         return count > 0;
+    }
+    /**
+     * Fetches a User by login.
+     * @param login the username
+     * @return the User entity, or null if not found
+     */
+    public User getUserByLogin(String login) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<User> q = em.createQuery(
+                    "SELECT u FROM User u WHERE u.login = :login", User.class);
+            q.setParameter("login", login);
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Authenticates a user.
+     * @param login the username
+     * @param password the password to check
+     * @return the authenticated User on success; null on failure
+     */
+    public User authenticate(String login, String password) {
+        User user = getUserByLogin(login);
+        if (user == null) {
+            // user does not exist
+            return null;
+        }
+        if (user.getPassword().equals(password)) {
+            // password matches
+            return user;
+        }
+        // wrong password
+        return null;
+    }
+
+    /**
+     * Convenience boolean version.
+     * @return true if login + password are correct
+     */
+    public boolean login(String login, String password) {
+        return authenticate(login, password) != null;
     }
 
     /**

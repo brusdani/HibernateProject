@@ -1,32 +1,41 @@
 package com.example.databaseapplication.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "ID", nullable = false)
+    protected Long id;
     @Enumerated(EnumType.STRING)
     private UserType type;
-    private String login;
+    @Column(name = "LOGIN", nullable = false, unique = true)
+    protected String login;
     private String password;
     private String email;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<GameCharacter> userCharacters = new ArrayList<>();
 
     @Version
     @Column(name = "VERSION")
     private Integer version;
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,5 +77,18 @@ public class User {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public List<GameCharacter> getUserCharacters() {
+        return userCharacters;
+    }
+
+    public void addCharacter(GameCharacter gameCharacter){
+        userCharacters.add(gameCharacter);
+        gameCharacter.setUser(this);
+    }
+    public void removeCharacter(GameCharacter gameCharacter){
+        userCharacters.remove(gameCharacter);
+        gameCharacter.setUser(null);
     }
 }

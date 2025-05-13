@@ -1,4 +1,4 @@
-package com.example.databaseapplication;
+package com.example.databaseapplication.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

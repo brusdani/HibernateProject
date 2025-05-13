@@ -1,9 +1,9 @@
 package com.example.databaseapplication.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-
-public class Character {
+@Entity
+@Table(name = "CHARACTERS")
+public class GameCharacter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -11,18 +11,19 @@ public class Character {
     @Enumerated(EnumType.STRING)
     private CharacterJob job;
     private String name;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
     @ManyToOne
-    @JoinColumn(name = "user_id")  // This column will store the foreign key
-    private User user;  // Foreign key reference to the User entity
+    @JoinColumn(name = "location_id")
+    private Location currentLocation;
+
     @Version
     @Column(name = "VERSION")
     private Integer version;
 
-    public Character(long id, CharacterJob job, String name, User user) {
-        this.id = id;
-        this.job = job;
-        this.name = name;
-        this.user = user;
+    public GameCharacter() {
+
     }
 
     public long getId() {

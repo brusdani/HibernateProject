@@ -20,4 +20,6 @@ module com.example.databaseapplication {
 
     // Export root package if needed
     exports com.example.databaseapplication;
+    exports com.example.databaseapplication.controllers;
+    opens com.example.databaseapplication.controllers to javafx.fxml;
 }
