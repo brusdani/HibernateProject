@@ -23,10 +23,14 @@ import java.util.concurrent.Executors;
 public class RegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
-    @FXML private TextField usernameField;
-    @FXML private TextField passwordField;
-    @FXML private TextField emailField;
-    @FXML private Button registerNewUserButton;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private TextField passwordField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private Button registerNewUserButton;
 
     private SceneController sceneController = new SceneController();
 
@@ -36,15 +40,6 @@ public class RegistrationController {
 
     public RegistrationController() {
 
-    }
-    // setter for your UserService
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    // setter for the ExecutorService
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
     }
 
     /**

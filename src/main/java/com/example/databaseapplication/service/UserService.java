@@ -38,9 +38,19 @@ public class UserService {
                 LOG.error("User with login: {} already exists", login);
                 return null;
             }
-
-
     }
-
-
+    public User authenticate(String login, String candidatePassword, EntityManager em) {
+        User user = userDao.findByLogin(login, em);
+        if (user == null) {
+            LOG.info("Username doesn't exist");
+            return null;    // no such username
+        }
+        if (user.getPassword().equals(candidatePassword)) {
+            return user;    // success
+        } else {
+            return null;    // wrong password
+        }
+    }
 }
+
+

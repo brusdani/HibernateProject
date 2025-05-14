@@ -30,4 +30,14 @@ public class UserDao {
         }
         return user;
     }
+    public User findByLogin(String login, EntityManager em) {
+        String jpql = "FROM User u WHERE u.login = :login";
+        return em.createQuery(jpql, User.class)
+                .setParameter("login", login)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
+
+
 }

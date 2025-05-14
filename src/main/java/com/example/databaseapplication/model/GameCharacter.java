@@ -7,16 +7,18 @@ public class GameCharacter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private long id;
+    private Long id;
     @Enumerated(EnumType.STRING)
     private CharacterJob job;
     private String name;
+
+    private String imageURL;
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location currentLocation;
+    @JoinColumn(name = "gameworld_id")
+    private GameWorld gameWorld;
 
     @Version
     @Column(name = "VERSION")
@@ -26,11 +28,11 @@ public class GameCharacter {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,6 +58,14 @@ public class GameCharacter {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public Integer getVersion() {

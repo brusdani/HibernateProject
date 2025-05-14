@@ -1,0 +1,25 @@
+package com.example.databaseapplication.controllers;
+
+import com.example.databaseapplication.dao.GameCharacterDao;
+import com.example.databaseapplication.model.GameCharacter;
+import com.example.databaseapplication.session.Session;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
+public class GameController {
+    @FXML
+    private Label worldLabel;
+    @FXML
+    private Label characterName;
+    @FXML
+    private Label characterJob;
+    @FXML
+
+    private void initialize(){
+        GameCharacter currentCharacter = Session.getCurrentGameCharacter();
+
+        characterName.setText(currentCharacter.getName());
+        characterJob.setText(currentCharacter.getJob().toString());
+
+    }
+}
