@@ -85,6 +85,8 @@ public class RegistrationController {
             }
         } catch (Exception e) {
             LOG.error("Exception occured while reloading data", e);
+        }finally {
+            if (em != null) em.close();
         }
     }
     @FXML

@@ -5,21 +5,20 @@ import com.example.databaseapplication.model.GameCharacter;
 import com.example.databaseapplication.session.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 public class GameController {
     @FXML
     private Label worldLabel;
-    @FXML
-    private Label characterName;
-    @FXML
-    private Label characterJob;
-    @FXML
+    @FXML private PlayerCharacterController playerPreviewController = new PlayerCharacterController();
 
+    @FXML
     private void initialize(){
         GameCharacter currentCharacter = Session.getCurrentGameCharacter();
 
-        characterName.setText(currentCharacter.getName());
-        characterJob.setText(currentCharacter.getJob().toString());
+        playerPreviewController.setCharacter(currentCharacter);
+
 
     }
 }

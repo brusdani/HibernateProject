@@ -18,6 +18,8 @@ public class User {
     private String password;
     private String email;
 
+
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -90,5 +92,8 @@ public class User {
     public void removeCharacter(GameCharacter gameCharacter){
         userCharacters.remove(gameCharacter);
         gameCharacter.setUser(null);
+    }
+    public void setUserCharacters(List<GameCharacter> userCharacters) {
+        this.userCharacters = userCharacters;
     }
 }

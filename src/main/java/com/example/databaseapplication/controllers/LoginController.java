@@ -3,6 +3,7 @@ package com.example.databaseapplication.controllers;
 import com.example.databaseapplication.HelloApplication;
 import com.example.databaseapplication.dao.UserDao;
 import com.example.databaseapplication.model.User;
+import com.example.databaseapplication.model.UserType;
 import com.example.databaseapplication.service.UserService;
 import com.example.databaseapplication.session.Session;
 import javafx.event.ActionEvent;
@@ -56,7 +57,11 @@ public class LoginController {
             if(authenticated != null) {
                 LOG.info("successful login");
                 Session.setUser(authenticated);
-                sceneController.changeScene(event, "character-selection.fxml");
+                if (authenticated.getType() == UserType.REGULAR) {
+                    sceneController.changeScene(event, "character-selection.fxml");
+                } else if (authenticated.getType() == UserType.ADMIN) {
+                    sceneController.changeScene(event, "admin-panel.fxml");
+                }
             } else {
                 LOG.info("wrong credentials");
                 errorLabel.setText("Wrong username or password");

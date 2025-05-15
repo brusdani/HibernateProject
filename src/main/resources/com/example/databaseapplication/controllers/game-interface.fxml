@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.GameController">
    <children>
       <Label fx:id="welcomeLabel" layoutX="124.0" layoutY="14.0" prefHeight="40.0" prefWidth="310.0" />
-      <VBox layoutX="22.0" layoutY="100.0" prefHeight="278.0" prefWidth="164.0">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="characterName" prefHeight="33.0" prefWidth="174.0" text="NameLabel" />
-            <Label fx:id="characterJob" layoutX="10.0" layoutY="154.0" prefHeight="33.0" prefWidth="174.0" text="ClassLabel" />
-         </children>
-      </VBox>
-      <Label fx:id="worldLabel" layoutX="186.0" layoutY="59.0" prefHeight="34.0" prefWidth="192.0" text="Current World" />
+      <Label fx:id="worldLabel" alignment="CENTER" layoutX="186.0" layoutY="59.0" prefHeight="34.0" prefWidth="192.0" text="Current World" />
+      <fx:include fx:id="playerPreview" layoutX="20.0" layoutY="120.0" source="player-character-view.fxml" />
    </children>
 </AnchorPane>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="238.0" prefWidth="193.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.PlayerCharacterController">
+   <children>
+      <ImageView fx:id="characterImage" fitHeight="159.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="characterNameLabel" alignment="CENTER" prefHeight="43.0" prefWidth="219.0" text="Label" />
+      <Label fx:id="characterJobLabel" alignment="CENTER" layoutX="10.0" layoutY="160.0" prefHeight="43.0" prefWidth="219.0" text="Label" />
+   </children>
+</VBox>

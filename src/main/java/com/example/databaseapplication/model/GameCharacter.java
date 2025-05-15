@@ -16,6 +16,15 @@ public class GameCharacter {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
+    public void setGameWorld(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
+
     @ManyToOne
     @JoinColumn(name = "gameworld_id")
     private GameWorld gameWorld;
