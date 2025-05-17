@@ -3,6 +3,7 @@ package com.example.databaseapplication.controllers;
 import com.example.databaseapplication.HelloApplication;
 import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.model.GameCharacter;
+import com.example.databaseapplication.model.GameWorld;
 import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.service.GameCharacterService;
 import com.example.databaseapplication.service.UserService;
@@ -72,6 +73,8 @@ public class SelectionController {
 
         if(picked != null) {
             Session.setCurrentGameCharacter(picked);
+            GameWorld currentGameWorld = picked.getGameWorld();
+            Session.setCurrentGameWorld(currentGameWorld);
             sceneController.changeScene(event,"game-interface.fxml");
         }
 
@@ -107,6 +110,12 @@ public class SelectionController {
         } finally {
             if (em != null) em.close();
         }
+    }
+
+    @FXML
+    private void onLogoutButtonClick(ActionEvent event) throws IOException {
+        Session.clear();
+        sceneController.changeScene(event,"login.fxml");
     }
 
 

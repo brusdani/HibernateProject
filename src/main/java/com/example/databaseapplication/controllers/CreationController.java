@@ -11,6 +11,7 @@ import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.service.GameCharacterService;
 import com.example.databaseapplication.service.GameWorldService;
 import com.example.databaseapplication.service.UserService;
+import com.example.databaseapplication.session.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -109,6 +110,11 @@ public class CreationController {
         } finally {
             if (em != null) em.close();
         }
+    }
+    @FXML
+    private void onLogoutButtonClick(ActionEvent event) throws IOException {
+        Session.clear();
+        sceneController.changeScene(event,"login.fxml");
     }
 
 

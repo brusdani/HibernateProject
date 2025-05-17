@@ -20,4 +20,11 @@ public class GameWorldDao {
         return em.createQuery("from GameWorld ", GameWorld.class)
                 .getResultList();
     }
+    public void deleteGameWorld(GameWorld gameWorld, EntityManager em) {
+        GameWorld managed = em.find(GameWorld.class, gameWorld.getId());
+        if (managed != null) {
+            em.remove(managed);
+        }
+    }
+
 }

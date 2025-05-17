@@ -66,9 +66,7 @@ public class GameWorld {
 
     @Override
     public String toString() {
-        return "GameWorld{" +
-                worldName +
-                '}';
+        return worldName;
     }
 }
 

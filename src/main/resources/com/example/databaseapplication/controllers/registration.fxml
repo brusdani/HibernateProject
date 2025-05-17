@@ -10,10 +10,11 @@
       <TextField fx:id="usernameField" layoutX="215.0" layoutY="104.0" />
       <TextField fx:id="passwordField" layoutX="216.0" layoutY="165.0" />
       <TextField fx:id="emailField" layoutX="217.0" layoutY="220.0" />
-      <Button fx:id="registerNewUserButton" layoutX="235.0" layoutY="286.0" mnemonicParsing="false" onAction="#registerNewUser" prefHeight="26.0" prefWidth="118.0" text="Register" />
+      <Button fx:id="registerNewUserButton" layoutX="232.0" layoutY="273.0" mnemonicParsing="false" onAction="#registerNewUser" prefHeight="26.0" prefWidth="118.0" text="Register" />
       <Label layoutX="215.0" layoutY="87.0" prefHeight="18.0" prefWidth="82.0" text="username" />
       <Label layoutX="215.0" layoutY="146.0" prefHeight="18.0" prefWidth="82.0" text="password" />
       <Label layoutX="217.0" layoutY="200.0" prefHeight="18.0" prefWidth="82.0" text="email" />
-      <Button layoutX="413.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginButtonClick" text="Login" />
+      <Button layoutX="269.0" layoutY="352.0" mnemonicParsing="false" onAction="#onLoginButtonClick" text="Login" />
+      <Label alignment="CENTER" layoutX="182.0" layoutY="316.0" prefHeight="18.0" prefWidth="214.0" text="Already have an account?" />
    </children>
 </AnchorPane>

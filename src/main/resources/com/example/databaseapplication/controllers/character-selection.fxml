@@ -13,5 +13,6 @@
       <ListView fx:id="characterPanel" layoutX="18.0" layoutY="100.0" orientation="HORIZONTAL" prefHeight="222.0" prefWidth="569.0" />
       <Button fx:id="selectButton" layoutX="119.0" layoutY="332.0" mnemonicParsing="false" onAction="#onSelectButtonClick" prefHeight="26.0" prefWidth="183.0" text="Select hero" />
       <Button fx:id="deleteButton" layoutX="343.0" layoutY="332.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="26.0" prefWidth="183.0" text="Delete hero" />
+      <Button layoutX="536.0" layoutY="9.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout" />
    </children>
 </AnchorPane>

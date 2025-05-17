@@ -16,7 +16,7 @@
       <Button fx:id="createButton" layoutX="181.0" layoutY="333.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Create" />
       <Label layoutX="210.0" layoutY="52.0" prefHeight="18.0" prefWidth="122.0" text="Enter character name:" />
       <Button fx:id="backButton" layoutX="332.0" layoutY="333.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="26.0" prefWidth="98.0" text="Back" />
-      <Label fx:id="infoLabel" alignment="CENTER" layoutX="26.0" layoutY="285.0" prefHeight="36.0" prefWidth="547.0" text="Label" />
+      <Label fx:id="infoLabel" alignment="CENTER" layoutX="26.0" layoutY="285.0" prefHeight="36.0" prefWidth="547.0" />
       <ListView fx:id="gameWorldPanel" layoutX="344.0" layoutY="167.0" prefHeight="100.0" prefWidth="114.0" />
       <VBox layoutX="161.0" layoutY="161.0" prefHeight="100.0" prefWidth="100.0" spacing="10.0">
          <children>
