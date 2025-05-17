@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS",
+        uniqueConstraints = @UniqueConstraint(columnNames = "login")
+)
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +20,6 @@ public class User {
     protected String login;
     private String password;
     private String email;
-
-
 
     @OneToMany(
             mappedBy = "user",

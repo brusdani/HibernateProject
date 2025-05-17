@@ -14,9 +14,11 @@ import com.example.databaseapplication.service.UserService;
 import com.example.databaseapplication.session.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.shape.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,12 @@ public class CreationController {
     private ListView<GameWorld> gameWorldPanel;
     @FXML
     private Button createButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
+    @FXML
+    private Rectangle overlay;
 
     private GameCharacterService gameCharacterService;
     private GameWorldService gameWorldService;
@@ -59,57 +67,104 @@ public class CreationController {
                 gameWorldPanel.getSelectionModel().selectedItemProperty().isNull());
     }
     @FXML
-    private void onCreateButtonClick(ActionEvent event){
-        String characterName = nameField.getText().trim();
+    private void onCreateButtonClick(ActionEvent event) {
+        final String characterName = nameField.getText().trim();
         if (characterName.isEmpty()) {
             infoLabel.setText("You must enter character name");
             return;
         }
-        RadioButton selected = (RadioButton) characterJobChoice.getSelectedToggle();
-        CharacterJob job = CharacterJob.valueOf(selected.getText().toUpperCase());
+        RadioButton selectedRb = (RadioButton) characterJobChoice.getSelectedToggle();
+        final CharacterJob job = CharacterJob.valueOf(selectedRb.getText().toUpperCase());
 
-        GameWorld selectedWorld = gameWorldPanel
-                .getSelectionModel()
-                .getSelectedItem();
+        final GameWorld selectedWorld =
+                gameWorldPanel.getSelectionModel().getSelectedItem();
         if (selectedWorld == null) {
             infoLabel.setText("You must pick a world");
             return;
         }
-
-        EntityManager em = null;
-
-        try {
-            em = HelloApplication.createEM();
-
-            //GameWorld defaultWorld = em.find(GameWorld.class, 1L);
-            GameCharacter newGameCharacter = gameCharacterService.createNewCharacter(characterName, job, selectedWorld, em);
-            if (newGameCharacter != null) {
-                sceneController.changeScene(event,"character-selection.fxml");
-            } else {
-                LOG.error("Character was not created");
+        infoLabel.setText("");
+        Task<GameCharacter> createTask = new Task<>() {
+            @Override
+            protected GameCharacter call() throws Exception {
+                //Thread.sleep(3000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    return gameCharacterService.createNewCharacter(
+                            characterName, job, selectedWorld, em
+                    );
+                } finally {
+                    if (em != null) em.close();
+                }
             }
-        } catch (Exception e) {
-            LOG.error("Exception occured while reloading data", e);
-        }finally {
-            if (em != null) em.close();
-        }
+            @Override
+            protected void succeeded() {
+                GameCharacter created = getValue();
+                if (created != null) {
+                    try {
+                        sceneController.changeScene(event, "character-selection.fxml");
+                    } catch (IOException ex) {
+                        LOG.error("Navigation error after create", ex);
+                        infoLabel.setText("Unexpected navigation error");
+                    }
+                } else {
+                    LOG.error("Character was not created");
+                    infoLabel.setText("Creation failed");
+                }
+            }
+            @Override
+            protected void failed() {
+                LOG.error("Exception occurred while creating character", getException());
+                infoLabel.setText("Error: " + getException().getMessage());
+            }
+        };
+        FXUtils.bindUiToTask(
+                createTask,
+                overlay,
+                progressIndicator,
+                List.of(nameField, gameWorldPanel),
+                List.of(createButton, backButton),
+                gameWorldPanel.getSelectionModel().selectedItemProperty()
+        );
+        executorService.submit(createTask);
     }
     @FXML
     private void onBackButtonClick(ActionEvent event) throws IOException {
         sceneController.changeScene(event,"character-selection.fxml");
     }
     private void loadGameWorlds() {
-        EntityManager em = null;
-        try {
-            em = HelloApplication.createEM();
-            List<GameWorld> universe = gameWorldService.getAllGameWorlds(em);
-            ObservableList<GameWorld> items = FXCollections.observableArrayList(universe);
-            gameWorldPanel.setItems(items);
-        } catch (Exception e) {
-            LOG.error("Exception occurred while loading characters", e);
-        } finally {
-            if (em != null) em.close();
-        }
+        Task<ObservableList<GameWorld>> loadTask = new Task<>() {
+            @Override
+            protected ObservableList<GameWorld> call() throws Exception {
+                //Thread.sleep(5000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    List<GameWorld> universe = gameWorldService.getAllGameWorlds(em);
+                    return FXCollections.observableArrayList(universe);
+                } finally {
+                    if (em != null) em.close();
+                }
+            }
+
+            @Override
+            protected void succeeded() {
+                gameWorldPanel.setItems(getValue());
+            }
+
+            @Override
+            protected void failed() {
+                LOG.error("Exception occurred while loading game worlds", getException());
+            }
+        };
+        FXUtils.bindUiToTask(
+                loadTask,
+                overlay,
+                progressIndicator,
+                gameWorldPanel    // disable this control during load
+        );
+
+        executorService.submit(loadTask);
     }
     @FXML
     private void onLogoutButtonClick(ActionEvent event) throws IOException {

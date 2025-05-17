@@ -10,13 +10,16 @@ import com.example.databaseapplication.service.GameWorldService;
 import com.example.databaseapplication.session.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +34,14 @@ public class GameController {
     private Label worldLabel;
     @FXML
     private ListView<GameCharacter> gameCharactersPanel;
-    @FXML private PlayerCharacterController playerPreviewController = new PlayerCharacterController();
+    @FXML
+    private PlayerCharacterController playerPreviewController = new PlayerCharacterController();
     @FXML
     private Button characterSelectionButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
+    @FXML
+    private Rectangle overlay;
 
     private GameCharacterService gameCharacterService;
     private ExecutorService executorService;
@@ -57,17 +65,38 @@ public class GameController {
 
     }
     private void loadCharacters() {
-        EntityManager em = null;
-        try {
-            em = HelloApplication.createEM();
-            List<GameCharacter> gamers = gameCharacterService.getCharactersForGameWorld(currentGameWorld, em);
-            ObservableList<GameCharacter> items = FXCollections.observableArrayList(gamers);
-            gameCharactersPanel.setItems(items);
-        } catch (Exception e) {
-            LOG.error("Exception occurred while loading characters", e);
-        } finally {
-            if (em != null) em.close();
-        }
+        Task<ObservableList<GameCharacter>> loadTask = new Task<>() {
+            @Override
+            protected ObservableList<GameCharacter> call() throws Exception {
+                //Thread.sleep(3000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    List<GameCharacter> gamers =
+                            gameCharacterService.getCharactersForGameWorld(currentGameWorld, em);
+                    return FXCollections.observableArrayList(gamers);
+                } finally {
+                    if (em != null) em.close();
+                }
+            }
+            @Override
+            protected void succeeded() {
+                gameCharactersPanel.setItems(getValue());
+            }
+            @Override
+            protected void failed() {
+                LOG.error("Exception occurred while loading characters", getException());
+            }
+        };
+
+        FXUtils.bindUiToTask(
+                loadTask,
+                overlay,
+                progressIndicator,
+                gameCharactersPanel // disable this control while the task runs
+        );
+
+        executorService.submit(loadTask);
     }
 
     @FXML

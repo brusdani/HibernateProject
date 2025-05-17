@@ -10,12 +10,11 @@ import com.example.databaseapplication.service.UserService;
 import com.example.databaseapplication.session.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+import javafx.scene.shape.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +35,10 @@ public class SelectionController {
     private Button deleteButton;
     @FXML
     private Button createButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
+    @FXML
+    private Rectangle overlay;
 
     private UserService userService;
 
@@ -77,39 +80,85 @@ public class SelectionController {
             Session.setCurrentGameWorld(currentGameWorld);
             sceneController.changeScene(event,"game-interface.fxml");
         }
-
     }
     @FXML
-    private void onDeleteButtonClick(){
+    private void onDeleteButtonClick() {
         GameCharacter picked = characterPanel.getSelectionModel().getSelectedItem();
-        EntityManager em = null;
-
-        try{
-            em = HelloApplication.createEM();
-            gameCharacterService.deleteCharacter(picked, em);
-            characterPanel.refresh();
-        } catch (Exception e) {
-            LOG.error("Exception occured while reloading data", e);
-        } finally {
-            if (em != null) em.close();
-        }
-        loadCharacters();
+        if (picked == null) return;
+        Task<Void> deleteTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                //Thread.sleep(5000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    gameCharacterService.deleteCharacter(picked, em);
+                } finally {
+                    if (em != null) em.close();
+                }
+                return null;
+            }
+            @Override
+            protected void succeeded() {
+                characterPanel.refresh();
+                loadCharacters();
+            }
+            @Override
+            protected void failed() {
+                LOG.error("Exception occurred while deleting character", getException());
+            }
+        };
+        FXUtils.bindUiToTask(
+                deleteTask,
+                overlay,
+                progressIndicator,
+                List.of(characterPanel),
+                List.of(selectButton, deleteButton),
+                characterPanel.getSelectionModel().selectedItemProperty()
+        );
+        executorService.submit(deleteTask);
     }
+
     private void loadCharacters() {
-        User currentUser = Session.getUser();
-        EntityManager em = null;
-        try {
-            em = HelloApplication.createEM();
-            List<GameCharacter> roster = gameCharacterService.getCharactersForUser(currentUser, em);
-            currentUser.setUserCharacters(roster);
-            ObservableList<GameCharacter> items = FXCollections.observableArrayList(roster);
-            characterPanel.setItems(items);
-            createButton.setDisable(roster.size() >= 3);
-        } catch (Exception e) {
-            LOG.error("Exception occurred while loading characters", e);
-        } finally {
-            if (em != null) em.close();
-        }
+        Task<ObservableList<GameCharacter>> loadTask = new Task<>() {
+            @Override
+            protected ObservableList<GameCharacter> call() throws Exception {
+                //Thread.sleep(5000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    User currentUser = Session.getUser();
+                    List<GameCharacter> roster =
+                            gameCharacterService.getCharactersForUser(currentUser, em);
+                    currentUser.setUserCharacters(roster);
+                    return FXCollections.observableArrayList(roster);
+                } finally {
+                    if (em != null) em.close();
+                }
+            }
+
+            @Override
+            protected void succeeded() {
+                ObservableList<GameCharacter> items = getValue();
+                characterPanel.setItems(items);
+                createButton.setDisable(items.size() >= 3);
+                welcomeLabel.setText("Welcome " + Session.getUser().getLogin());
+            }
+
+            @Override
+            protected void failed() {
+                LOG.error("Exception occurred while loading characters", getException());
+            }
+        };
+
+        FXUtils.bindUiToTask(
+                loadTask,
+                overlay,
+                progressIndicator, List.of(characterPanel),
+                        List.of(selectButton, deleteButton),
+                characterPanel.getSelectionModel().selectedItemProperty()
+        );
+        executorService.submit(loadTask);
     }
 
     @FXML

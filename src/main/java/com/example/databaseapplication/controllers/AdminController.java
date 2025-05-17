@@ -40,7 +40,8 @@ public class AdminController {
     private Label welcomeLabel;
     @FXML
     private ProgressIndicator progressIndicator;
-    @FXML private Rectangle overlay;
+    @FXML
+    private Rectangle overlay;
     @FXML
     private Label pleaseWaitLabel;
 
@@ -129,7 +130,7 @@ public class AdminController {
 
             @Override
             protected Void call() throws Exception {
-                Thread.sleep(15000);
+                //Thread.sleep(15000);
                 EntityManager em = null;
                 try {
                     em = HelloApplication.createEM();

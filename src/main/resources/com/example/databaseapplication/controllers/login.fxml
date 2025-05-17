@@ -3,19 +3,29 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.LoginController">
+
+<StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.LoginController">
    <children>
-      <TextField fx:id="loginField" layoutX="132.0" layoutY="82.0" prefHeight="36.0" prefWidth="334.0" />
-      <Button fx:id="loginButton" layoutX="218.0" layoutY="245.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="36.0" prefWidth="166.0" text="Login" />
-      <PasswordField fx:id="passwordField" layoutX="132.0" layoutY="145.0" prefHeight="36.0" prefWidth="334.0" />
-      <Label fx:id="titleLabel" alignment="CENTER" layoutX="-1.0" prefHeight="18.0" prefWidth="601.0" styleClass="titleLabel" text="JavTerra" />
-      <Label fx:id="loginLabel" layoutX="132.0" layoutY="64.0" text="Username" />
-      <Label fx:id="passwordLabel" layoutX="133.0" layoutY="127.0" text="Password" />
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="7.0" layoutY="187.0" prefHeight="58.0" prefWidth="588.0" />
-      <Label alignment="CENTER" layoutX="7.0" layoutY="281.0" prefHeight="58.0" prefWidth="588.0" text="Don't have an account yet?" />
-      <Button fx:id="registrationButton" layoutX="218.0" layoutY="328.0" mnemonicParsing="false" onAction="#registrationButtonClick" prefHeight="36.0" prefWidth="166.0" text="Register" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="601.0">
+         <children>
+            <TextField fx:id="loginField" layoutX="132.0" layoutY="82.0" prefHeight="36.0" prefWidth="334.0" />
+            <Button fx:id="loginButton" layoutX="218.0" layoutY="245.0" mnemonicParsing="false" onAction="#loginButtonClick" prefHeight="36.0" prefWidth="166.0" text="Login" />
+            <PasswordField fx:id="passwordField" layoutX="132.0" layoutY="145.0" prefHeight="36.0" prefWidth="334.0" />
+            <Label fx:id="titleLabel" alignment="CENTER" layoutX="-1.0" prefHeight="18.0" prefWidth="601.0" styleClass="titleLabel" text="JavTerra" />
+            <Label fx:id="loginLabel" layoutX="132.0" layoutY="64.0" text="Username" />
+            <Label fx:id="passwordLabel" layoutX="133.0" layoutY="127.0" text="Password" />
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="7.0" layoutY="187.0" prefHeight="58.0" prefWidth="588.0" />
+            <Label alignment="CENTER" layoutX="7.0" layoutY="281.0" prefHeight="58.0" prefWidth="588.0" text="Don't have an account yet?" />
+            <Button fx:id="registrationButton" layoutX="218.0" layoutY="328.0" mnemonicParsing="false" onAction="#registrationButtonClick" prefHeight="36.0" prefWidth="166.0" text="Register" />
+         </children>
+      </AnchorPane>
+      <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />
+      <ProgressIndicator fx:id="progressIndicator" prefHeight="68.0" prefWidth="46.0" visible="false" />
    </children>
-</AnchorPane>
+</StackPane>

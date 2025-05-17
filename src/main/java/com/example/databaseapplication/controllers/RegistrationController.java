@@ -4,16 +4,18 @@ import com.example.databaseapplication.HelloApplication;
 import com.example.databaseapplication.dao.UserDao;
 import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.service.UserService;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.shape.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +33,14 @@ public class RegistrationController {
     private TextField emailField;
     @FXML
     private Button registerNewUserButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
+    @FXML
+    private Rectangle overlay;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private Button loginButton;
 
     private SceneController sceneController = new SceneController();
 
@@ -57,52 +67,64 @@ public class RegistrationController {
      */
     @FXML
     public void registerNewUser(ActionEvent event) {
-        String login = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-        String email = emailField.getText().trim();
+        final String login    = usernameField.getText().trim();
+        final String pwd      = passwordField.getText().trim();
+        final String email    = emailField.getText().trim();
+        errorLabel.setText("");
 
-        // basic non‐empty validation
-        if (login.isEmpty() || password.isEmpty() || email.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "All fields are required.");
+        if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
+            errorLabel.setText("All fields need to be filled");
             return;
         }
 
-        EntityManager em = null;
-
-        try {
-            em = HelloApplication.createEM();
-            User newUser = userService.registerNewUser(login, password, email, em);
-            if (newUser != null) {
-                showAlert(Alert.AlertType.INFORMATION, "User registered successfully!");
-                usernameField.clear();
-                passwordField.clear();
-                emailField.clear();
-
-                sceneController.changeScene(event,"login.fxml");
-            } else {
-                showAlert(Alert.AlertType.ERROR,
-                        "Registration failed: username may already exist.");
+        Task<User> registerTask = new Task<>() {
+            @Override
+            protected User call() throws Exception {
+                //Thread.sleep(5000);
+                EntityManager em = null;
+                try {
+                    em = HelloApplication.createEM();
+                    return userService.registerNewUser(login,pwd,email,em);
+                } finally {
+                    if (em != null) em.close();
+                }
             }
-        } catch (Exception e) {
-            LOG.error("Exception occured while reloading data", e);
-        }finally {
-            if (em != null) em.close();
-        }
+        };
+        registerTask.setOnSucceeded(e -> {
+            User created = registerTask.getValue();
+            if (created != null) {
+                // success: navigate to login
+                showAlert(Alert.AlertType.INFORMATION, "User registered successfully!");
+                try {
+                    sceneController.changeScene(event, "login.fxml");
+                } catch (Exception ex) {
+                    errorLabel.setText("Navigation error");
+                }
+            } else {
+                // null means username existed
+                errorLabel.setText("Registration failed: username may already exist");
+            }
+        });
+        registerTask.setOnFailed(e -> {
+            errorLabel.setText("Registration error: " + registerTask.getException().getMessage());
+        });
+        FXUtils.bindUiToTask(
+                registerTask,
+                overlay,
+                progressIndicator,
+                loginButton,
+                registerNewUserButton
+        );
+        executorService.submit(registerTask);
+    }
+
+    private void showAlert(Alert.AlertType type, String msg) {
+        Alert a = new Alert(type, msg, ButtonType.OK);
+        a.showAndWait();
     }
     @FXML
     private void onLoginButtonClick(ActionEvent event) throws IOException {
         sceneController.changeScene(event,"login.fxml");
     }
 
-
-
-    /**
-     * Utility method to pop up a simple alert.
-     */
-    private void showAlert(Alert.AlertType type, String message) {
-        Alert alert = new Alert(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }
