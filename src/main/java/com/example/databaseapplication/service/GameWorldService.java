@@ -1,11 +1,13 @@
 package com.example.databaseapplication.service;
 
 import com.example.databaseapplication.dao.GameWorldDao;
+import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.GameCharacter;
 import com.example.databaseapplication.model.GameWorld;
 
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import org.hibernate.StaleObjectStateException;
 import java.util.ConcurrentModificationException;
@@ -24,10 +26,17 @@ public class GameWorldService {
         gameWorld.setWorldName(worldName);
         gameWorld.setWorldDescription(description);
 
-        em.getTransaction().begin();
-        gameWorldDao.saveGameWorld(gameWorld, em);
-        em.getTransaction().commit();
-        return gameWorld;
+        try {
+            em.getTransaction().begin();
+            gameWorldDao.saveGameWorld(gameWorld, em);
+            em.getTransaction().commit();
+            return gameWorld;
+        } catch (PersistenceException ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database down", ex);
+        }
     }
 
     public GameWorld updateWorld(GameWorld detachedCopy, EntityManager em) {
@@ -48,7 +57,6 @@ public class GameWorldService {
             return managed;
 
         } catch (OptimisticLockException ole) {
-            // catch JPA optimistic lock failure during merge()
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw new ConcurrentModificationException(
                     "This world was changed by someone else. Please reload and try again.",
@@ -75,19 +83,30 @@ public class GameWorldService {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw rex;
 
-        } catch (RuntimeException rex) {
+        } catch (PersistenceException ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
-            throw rex;
+            throw new DataAccessException("Database is currently down", ex);
         }
     }
     public void deleteGameWorld(GameWorld gameWorld, EntityManager em) {
-        em.getTransaction().begin();
-        gameWorldDao.deleteGameWorld(gameWorld, em);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            gameWorldDao.deleteGameWorld(gameWorld, em);
+            em.getTransaction().commit();
+        } catch (PersistenceException ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database Down", ex);
+        }
     }
 
     public List<GameWorld> getAllGameWorlds(EntityManager em) {
-        return gameWorldDao.getAllGameWorld(em);
+        try {
+            return gameWorldDao.getAllGameWorld(em);
+        } catch (PersistenceException ex) {
+            throw new DataAccessException("Database down", ex);
+        }
     }
 
 }

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameController {
+public class GameController extends BaseController {
     @FXML
     private Label worldLabel;
     @FXML
@@ -88,7 +88,7 @@ public class GameController {
                 LOG.error("Exception occurred while loading characters", getException());
             }
         };
-
+        handleTaskFailure(loadTask);
         FXUtils.bindUiToTask(
                 loadTask,
                 overlay,

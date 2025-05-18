@@ -20,7 +20,7 @@ import java.util.ConcurrentModificationException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameWorldFormController {
+public class GameWorldFormController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(GameWorldFormController.class);
 
     @FXML
@@ -65,7 +65,6 @@ public class GameWorldFormController {
     }
     @FXML
     private void onSaveButtonclick(ActionEvent event) {
-        // 1) grab & validate inputs on the FX thread
         errorLabel.setText("");
         workingCopy.setWorldName(worldNameField.getText().trim());
         workingCopy.setWorldDescription(descriptionArea.getText().trim());
@@ -73,8 +72,6 @@ public class GameWorldFormController {
             errorLabel.setText("Name cannot be blank");
             return;
         }
-
-        // 2) build the Task
         Task<GameWorld> saveTask = new Task<>() {
             @Override
             protected GameWorld call() throws Exception {
@@ -94,7 +91,6 @@ public class GameWorldFormController {
                     if (em != null) em.close();
                 }
             }
-
             @Override
             protected void succeeded() {
                 GameWorld result = getValue();

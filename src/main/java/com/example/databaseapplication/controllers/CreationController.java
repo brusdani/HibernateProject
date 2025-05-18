@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CreationController {
+public class CreationController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(CreationController.class);
 
     @FXML
@@ -118,6 +118,7 @@ public class CreationController {
                 infoLabel.setText("Error: " + getException().getMessage());
             }
         };
+        handleTaskFailure(createTask);
         FXUtils.bindUiToTask(
                 createTask,
                 overlay,
@@ -157,6 +158,7 @@ public class CreationController {
                 LOG.error("Exception occurred while loading game worlds", getException());
             }
         };
+        handleTaskFailure(loadTask);
         FXUtils.bindUiToTask(
                 loadTask,
                 overlay,

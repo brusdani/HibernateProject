@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AdminController {
+public class AdminController extends BaseController {
 
     @FXML
     private Button editButton;
@@ -96,6 +96,7 @@ public class AdminController {
                 LOG.error("Exception occurred while loading game worlds", getException());
             }
         };
+        handleTaskFailure(task);
         FXUtils.bindUiToTask(
                 task,
                 overlay,
@@ -155,6 +156,7 @@ public class AdminController {
                 LOG.error("Exception occurred while deleting game world", ex);
             }
         };
+        handleTaskFailure(deleteTask);
         FXUtils.bindUiToTask(
                 deleteTask,
                 overlay,

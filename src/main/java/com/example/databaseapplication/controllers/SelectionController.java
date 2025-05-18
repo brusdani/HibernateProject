@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SelectionController {
+public class SelectionController extends BaseController {
     @FXML
     private Label welcomeLabel;
     @FXML
@@ -108,6 +108,8 @@ public class SelectionController {
                 LOG.error("Exception occurred while deleting character", getException());
             }
         };
+        handleTaskFailure(deleteTask);
+
         FXUtils.bindUiToTask(
                 deleteTask,
                 overlay,
@@ -150,6 +152,7 @@ public class SelectionController {
                 LOG.error("Exception occurred while loading characters", getException());
             }
         };
+        handleTaskFailure(loadTask);
 
         FXUtils.bindUiToTask(
                 loadTask,

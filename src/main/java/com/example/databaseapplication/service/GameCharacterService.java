@@ -2,12 +2,15 @@ package com.example.databaseapplication.service;
 
 import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.dao.UserDao;
+import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.*;
 import com.example.databaseapplication.session.Session;
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 public class GameCharacterService {
@@ -20,7 +23,10 @@ public class GameCharacterService {
         this.gameCharacterDao = gameCharacterDao;
     }
 
-    public GameCharacter createNewCharacter(String nickname, CharacterJob characterJob, GameWorld world, EntityManager em) {
+    public GameCharacter createNewCharacter(String nickname,
+                                            CharacterJob characterJob,
+                                            GameWorld world,
+                                            EntityManager em) {
         GameCharacter gameCharacter = new GameCharacter();
 
         gameCharacter.setName(nickname);
@@ -29,21 +35,42 @@ public class GameCharacterService {
         gameCharacter.setUser(Session.getUser());
         gameCharacter.setGameWorld(world);
 
-
-        em.getTransaction().begin();
-        gameCharacterDao.saveCharacter(gameCharacter, em);
-        em.getTransaction().commit();
-        return gameCharacter;
+        try {
+            em.getTransaction().begin();
+            gameCharacterDao.saveCharacter(gameCharacter, em);
+            em.getTransaction().commit();
+            return gameCharacter;
+        } catch (PersistenceException ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database down", ex);
+        }
     }
     public List<GameCharacter> getCharactersForUser(User user, EntityManager em) {
-        return gameCharacterDao.findByUser(user, em);
+        try {
+            return gameCharacterDao.findByUser(user, em);
+        } catch (PersistenceException ex) {
+            throw new DataAccessException("Database down", ex);
+        }
     }
     public List<GameCharacter> getCharactersForGameWorld(GameWorld world, EntityManager em) {
-        return gameCharacterDao.findByGameWorld(world, em);
+        try {
+            return gameCharacterDao.findByGameWorld(world, em);
+        } catch (PersistenceException ex) {
+            throw new DataAccessException("Database down", ex);
+        }
     }
     public void deleteCharacter(GameCharacter character, EntityManager em) {
-        em.getTransaction().begin();
-        gameCharacterDao.deleteCharacter(character, em);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            gameCharacterDao.deleteCharacter(character, em);
+            em.getTransaction().commit();
+        } catch (PersistenceException ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database down", ex);
+        }
     }
 }

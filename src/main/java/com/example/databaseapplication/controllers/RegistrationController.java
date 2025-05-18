@@ -2,6 +2,7 @@ package com.example.databaseapplication.controllers;
 
 import com.example.databaseapplication.HelloApplication;
 import com.example.databaseapplication.dao.UserDao;
+import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.service.UserService;
 import javafx.concurrent.Task;
@@ -22,7 +23,7 @@ import java.util.concurrent.Executors;
 /**
  * JavaFX controller for the registration form.
  */
-public class RegistrationController {
+public class RegistrationController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
     @FXML
@@ -61,15 +62,11 @@ public class RegistrationController {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    /**
-     * Called when the user clicks the \"Register\" button.
-     * Reads the fields and attempts to persist a new User.
-     */
     @FXML
     public void registerNewUser(ActionEvent event) {
-        final String login    = usernameField.getText().trim();
-        final String pwd      = passwordField.getText().trim();
-        final String email    = emailField.getText().trim();
+        final String login = usernameField.getText().trim();
+        final String pwd   = passwordField.getText().trim();
+        final String email = emailField.getText().trim();
         errorLabel.setText("");
 
         if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
@@ -80,40 +77,47 @@ public class RegistrationController {
         Task<User> registerTask = new Task<>() {
             @Override
             protected User call() throws Exception {
-                //Thread.sleep(5000);
+                Thread.sleep(3000);
                 EntityManager em = null;
                 try {
                     em = HelloApplication.createEM();
-                    return userService.registerNewUser(login,pwd,email,em);
+                    return userService.registerNewUser(login, pwd, email, em);
                 } finally {
                     if (em != null) em.close();
                 }
             }
-        };
-        registerTask.setOnSucceeded(e -> {
-            User created = registerTask.getValue();
-            if (created != null) {
-                // success: navigate to login
-                showAlert(Alert.AlertType.INFORMATION, "User registered successfully!");
-                try {
-                    sceneController.changeScene(event, "login.fxml");
-                } catch (Exception ex) {
-                    errorLabel.setText("Navigation error");
+            @Override
+            protected void succeeded() {
+                User created = getValue();
+                if (created != null) {
+                    Alert info = new Alert(Alert.AlertType.INFORMATION,
+                            "User registered successfully!",
+                            ButtonType.OK);
+                    info.showAndWait();
+                    try {
+                        sceneController.changeScene(event, "login.fxml");
+                    } catch (Exception ex) {
+                        errorLabel.setText("Navigation error");
+                    }
+                } else {
+                    errorLabel.setText("Registration failed: username may already exist");
                 }
-            } else {
-                // null means username existed
-                errorLabel.setText("Registration failed: username may already exist");
             }
-        });
-        registerTask.setOnFailed(e -> {
-            errorLabel.setText("Registration error: " + registerTask.getException().getMessage());
-        });
+            @Override
+            protected void failed() {
+                Throwable ex = getException();
+                if (!(ex instanceof DataAccessException)) {
+                    errorLabel.setText("Registration error: " + ex.getMessage());
+                }
+            }
+        };
+        handleTaskFailure(registerTask);
         FXUtils.bindUiToTask(
                 registerTask,
                 overlay,
                 progressIndicator,
-                loginButton,
-                registerNewUserButton
+                registerNewUserButton,
+                loginButton
         );
         executorService.submit(registerTask);
     }

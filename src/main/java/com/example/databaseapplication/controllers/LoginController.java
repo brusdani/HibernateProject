@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LoginController {
+public class LoginController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @FXML
@@ -61,13 +61,11 @@ public class LoginController {
     private void loginButtonClick(ActionEvent event) {
         final String username = loginField.getText().trim();
         final String pwd      = passwordField.getText().trim();
-
         errorLabel.setText("");
-
         Task<User> loginTask = new Task<>() {
             @Override
             protected User call() throws Exception {
-                //Thread.sleep(5000);
+                Thread.sleep(3000);
                 EntityManager em = null;
                 try {
                     em = HelloApplication.createEM();
@@ -76,34 +74,29 @@ public class LoginController {
                     if (em != null) em.close();
                 }
             }
-        };
-
-        loginTask.setOnSucceeded(e -> {
-            User authenticated = loginTask.getValue();
-            if (authenticated != null) {
-                LOG.info("successful login");
-                Session.setUser(authenticated);
-                try {
-                    if (authenticated.getType() == UserType.REGULAR) {
-                        sceneController.changeScene(event, "character-selection.fxml");
-                    } else {
-                        sceneController.changeScene(event, "admin-panel.fxml");
+            @Override
+            protected void succeeded() {
+                User authenticated = getValue();
+                if (authenticated != null) {
+                    Session.setUser(authenticated);
+                    try {
+                        String fxml = (authenticated.getType() == UserType.REGULAR)
+                                ? "character-selection.fxml"
+                                : "admin-panel.fxml";
+                        sceneController.changeScene(event, fxml);
+                    } catch (IOException ex) {
+                        errorLabel.setText("Unexpected navigation error");
                     }
-                } catch (IOException ex) {
-                    LOG.error("Error changing scene after login", ex);
-                    errorLabel.setText("Unexpected navigation error");
+                } else {
+                    errorLabel.setText("Wrong username or password");
                 }
-            } else {
-                // wrong credentials
-                LOG.info("wrong credentials");
-                errorLabel.setText("Wrong username or password");
             }
-        });
-        loginTask.setOnFailed(e -> {
-            Throwable ex = loginTask.getException();
-            LOG.error("Exception during sign in process", ex);
-            errorLabel.setText("An error occurred: " + ex.getMessage());
-        });
+            @Override
+            protected void failed() {
+                errorLabel.setText("Task hasn't gone through");
+            }
+        };
+        handleTaskFailure(loginTask);
         FXUtils.bindUiToTask(
                 loginTask,
                 overlay,

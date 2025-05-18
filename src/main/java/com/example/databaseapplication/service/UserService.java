@@ -1,6 +1,7 @@
 package com.example.databaseapplication.service;
 
 import com.example.databaseapplication.dao.UserDao;
+import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.model.UserType;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 
 public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
@@ -19,36 +21,44 @@ public class UserService {
     }
 
     public User registerNewUser(String login, String password, String email, EntityManager em) {
-            User user = new User();
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setType(UserType.REGULAR);
 
-            user.setLogin(login);
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setType(UserType.REGULAR);
-
-
+        try {
             em.getTransaction().begin();
-            if (!userDao.existsByUsername(login, em)){
+            if (!userDao.existsByUsername(login, em)) {
                 userDao.saveUser(user, em);
                 em.getTransaction().commit();
                 return user;
-            }
-            else {
+            } else {
                 em.getTransaction().rollback();
                 LOG.error("User with login: {} already exists", login);
                 return null;
             }
+        } catch (PersistenceException ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database down", ex);
+        }
     }
     public User authenticate(String login, String candidatePassword, EntityManager em) {
-        User user = userDao.findByLogin(login, em);
-        if (user == null) {
-            LOG.info("Username doesn't exist");
-            return null;    // no such username
-        }
-        if (user.getPassword().equals(candidatePassword)) {
-            return user;    // success
-        } else {
-            return null;    // wrong password
+        try {
+            User user = userDao.findByLogin(login, em);
+            if (user == null) {
+                LOG.info("Username doesn't exist");
+                return null;    // no such username
+            }
+            if (user.getPassword().equals(candidatePassword)) {
+                return user;    // success
+            } else {
+                return null;    // wrong password
+            }
+        } catch (PersistenceException ex) {
+            throw new DataAccessException("Database down", ex);
         }
     }
 }
