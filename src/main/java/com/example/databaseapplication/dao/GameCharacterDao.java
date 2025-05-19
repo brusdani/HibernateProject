@@ -14,6 +14,12 @@ public class GameCharacterDao {
                 .setParameter("user", user)
                 .getSingleResult();
     }
+    public long countByWorld(GameWorld world, EntityManager em) {
+        String jpql = "SELECT COUNT(c) FROM GameCharacter c WHERE c.gameWorld = :world";
+        return em.createQuery(jpql, Long.class)
+                .setParameter("world", world)
+                .getSingleResult();
+    }
     public GameCharacter saveCharacter(GameCharacter gameCharacter, EntityManager em){
         if(gameCharacter.getId() == null) {
             em.persist(gameCharacter);
@@ -26,6 +32,11 @@ public class GameCharacterDao {
         String jpql = "SELECT c FROM GameCharacter c WHERE c.user = :user";
         return em.createQuery(jpql, GameCharacter.class)
                 .setParameter("user", user)
+                .getResultList();
+    }
+    public List<GameCharacter> findAll(EntityManager em) {
+        String jpql = "SELECT c FROM GameCharacter c";
+        return em.createQuery(jpql, GameCharacter.class)
                 .getResultList();
     }
     public List<GameCharacter> findByGameWorld(GameWorld world, EntityManager em) {

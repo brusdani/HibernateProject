@@ -57,7 +57,7 @@ public class CreationController extends BaseController {
     @FXML
     private void initialize() {
         gameCharacterService = new GameCharacterService(new GameCharacterDao());
-        gameWorldService = new GameWorldService(new GameWorldDao());
+        gameWorldService = new GameWorldService(new GameWorldDao(), new GameCharacterDao());
         executorService = Executors.newSingleThreadExecutor();
 
         gameWorldPanel.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -172,6 +172,10 @@ public class CreationController extends BaseController {
     private void onLogoutButtonClick(ActionEvent event) throws IOException {
         Session.clear();
         sceneController.changeScene(event,"login.fxml");
+    }
+    @FXML
+    private void onReloadButtonClick(ActionEvent event){
+        loadGameWorlds();
     }
 
 

@@ -87,6 +87,6 @@ public class GameCharacter {
 
     @Override
     public String toString() {
-        return name + "(" + job + ")";
+        return name + "(" + job + ")(" + gameWorld + ")" ;
     }
 }

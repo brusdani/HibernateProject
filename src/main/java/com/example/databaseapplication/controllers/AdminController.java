@@ -56,7 +56,7 @@ public class AdminController extends BaseController {
 
     @FXML
     private void initialize() {
-        gameWorldService = new GameWorldService(new GameWorldDao());
+        gameWorldService = new GameWorldService(new GameWorldDao(),new GameCharacterDao());
         executorService = Executors.newSingleThreadExecutor();
         User currentUser = Session.getUser();
         welcomeLabel.setText("Welcome " + currentUser.getLogin());
@@ -121,10 +121,8 @@ public class AdminController extends BaseController {
 
     @FXML
     private void onDeleteButtonClick(ActionEvent event) {
-        // Grab selection on FX thread
         final GameWorld picked = gameWorldPanel.getSelectionModel().getSelectedItem();
         if (picked == null) {
-            // optionally show a warning: “Please select something to delete”
             return;
         }
         Task<Void> deleteTask = new Task<>() {
@@ -172,5 +170,13 @@ public class AdminController extends BaseController {
     private void onLogoutButtonClick(ActionEvent event) throws IOException {
         Session.clear();
         sceneController.changeScene(event,"login.fxml");
+    }
+    @FXML
+    private void onReloadButtonClick(ActionEvent event){
+        loadGameWorlds();
+    }
+    @FXML
+    private void onTransferButtonClick(ActionEvent event) throws IOException {
+        sceneController.changeScene(event,"transfer-service.fxml");
     }
 }

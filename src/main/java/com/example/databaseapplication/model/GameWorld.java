@@ -15,8 +15,6 @@ public class GameWorld {
     private String worldDescription;
     @OneToMany(
             mappedBy = "gameWorld",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.LAZY
     )
     private List<GameCharacter> gameCharacters;
@@ -62,6 +60,9 @@ public class GameWorld {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+    public boolean hasCharacters() {
+        return gameCharacters != null && !gameCharacters.isEmpty();
     }
 
     @Override

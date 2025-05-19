@@ -1,6 +1,7 @@
 package com.example.databaseapplication.controllers;
 
 import com.example.databaseapplication.HelloApplication;
+import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.dao.GameWorldDao;
 import com.example.databaseapplication.model.GameCharacter;
 import com.example.databaseapplication.model.GameWorld;
@@ -46,7 +47,7 @@ public class GameWorldFormController extends BaseController {
 
     @FXML
     private void initialize(){
-        gameWorldService = new GameWorldService(new GameWorldDao());
+        gameWorldService = new GameWorldService(new GameWorldDao(), new GameCharacterDao());
         executorService = Executors.newSingleThreadExecutor();
 
         GameWorld selected = Session.getCurrentGameWorld();
@@ -114,7 +115,7 @@ public class GameWorldFormController extends BaseController {
                 errorLabel.setText("Error: " + getException().getMessage());
             }
         };
-
+        handleTaskFailure(saveTask);
         FXUtils.bindUiToTask(
                 saveTask,
                 overlay,

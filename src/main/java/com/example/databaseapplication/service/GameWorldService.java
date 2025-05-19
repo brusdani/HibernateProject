@@ -1,5 +1,6 @@
 package com.example.databaseapplication.service;
 
+import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.dao.GameWorldDao;
 import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.GameCharacter;
@@ -16,9 +17,11 @@ import java.util.List;
 public class GameWorldService {
 
     private final GameWorldDao gameWorldDao;
+    private final GameCharacterDao gameCharacterDao;
 
-    public GameWorldService(GameWorldDao gameWorldDao) {
+    public GameWorldService(GameWorldDao gameWorldDao, GameCharacterDao gameCharacterDao) {
         this.gameWorldDao = gameWorldDao;
+        this.gameCharacterDao = gameCharacterDao;
     }
 
     public GameWorld createNewWorld(String worldName, String description, EntityManager em) {
@@ -91,6 +94,21 @@ public class GameWorldService {
     public void deleteGameWorld(GameWorld gameWorld, EntityManager em) {
         try {
             em.getTransaction().begin();
+
+            GameWorld managed = em.find(GameWorld.class, gameWorld.getId());
+            if (managed == null) {
+                throw new IllegalArgumentException(
+                        "GameWorld not found (id=" + gameWorld.getId() + ")"
+                );
+            }
+
+            long count = gameCharacterDao.countByWorld(managed, em);
+            if (count > 0) {
+                throw new IllegalStateException(
+                        "Cannot delete GameWorld; it has " + count + " character(s)."
+                );
+            }
+
             gameWorldDao.deleteGameWorld(gameWorld, em);
             em.getTransaction().commit();
         } catch (PersistenceException ex) {
@@ -98,6 +116,11 @@ public class GameWorldService {
                 em.getTransaction().rollback();
             }
             throw new DataAccessException("Database Down", ex);
+        }  catch (RuntimeException re) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw re;
         }
     }
 

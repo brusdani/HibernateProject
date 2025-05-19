@@ -2,6 +2,7 @@ package com.example.databaseapplication.service;
 
 import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.dao.UserDao;
+import com.example.databaseapplication.exceptions.BusinessException;
 import com.example.databaseapplication.exceptions.DataAccessException;
 import com.example.databaseapplication.model.*;
 import com.example.databaseapplication.session.Session;
@@ -27,19 +28,35 @@ public class GameCharacterService {
                                             CharacterJob characterJob,
                                             GameWorld world,
                                             EntityManager em) {
-        GameCharacter gameCharacter = new GameCharacter();
-
-        gameCharacter.setName(nickname);
-        gameCharacter.setJob(characterJob);
-        gameCharacter.setImageURL(characterJob.getImagePath());
-        gameCharacter.setUser(Session.getUser());
-        gameCharacter.setGameWorld(world);
 
         try {
             em.getTransaction().begin();
+
+            GameWorld managedWorld = em.find(GameWorld.class, world.getId());
+            if (managedWorld == null) {
+                LOG.info("GameWorld no longer exists");
+                throw new BusinessException(
+                        "Selected world no longer exists. Please choose another."
+                );
+            }
+
+            GameCharacter gameCharacter = new GameCharacter();
+            gameCharacter.setName(nickname);
+            gameCharacter.setJob(characterJob);
+            gameCharacter.setImageURL(characterJob.getImagePath());
+            gameCharacter.setUser(Session.getUser());
+            gameCharacter.setGameWorld(managedWorld);
+
+
             gameCharacterDao.saveCharacter(gameCharacter, em);
             em.getTransaction().commit();
             return gameCharacter;
+        } catch (BusinessException be) {
+            LOG.info("BusinessException caught");
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw be;
         } catch (PersistenceException ex) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -61,6 +78,13 @@ public class GameCharacterService {
             throw new DataAccessException("Database down", ex);
         }
     }
+    public List<GameCharacter> getAllCharacters(EntityManager em) {
+        try {
+            return gameCharacterDao.findAll(em);
+        } catch (PersistenceException ex) {
+            throw new DataAccessException("Database down", ex);
+        }
+    }
     public void deleteCharacter(GameCharacter character, EntityManager em) {
         try {
             em.getTransaction().begin();
@@ -73,4 +97,56 @@ public class GameCharacterService {
             throw new DataAccessException("Database down", ex);
         }
     }
+    public GameCharacter transferCharacter(GameCharacter gameCharacter, GameWorld gameWorld, EntityManager em){
+        try {
+            em.getTransaction().begin();
+
+            GameCharacter managedChar = em.find(
+                    GameCharacter.class,
+                    gameCharacter.getId()
+            );
+            if (managedChar == null) {
+                throw new BusinessException(
+                        "Character not found (id=" + gameCharacter.getId() + ")"
+                );
+            }
+            GameWorld managedWorld = em.find(
+                    GameWorld.class,
+                    gameWorld.getId()
+            );
+            if (managedWorld == null) {
+                throw new BusinessException(
+                        "Target world not found (id=" + gameWorld.getId() + ")"
+                );
+            }
+            if (managedChar.getGameWorld().getId().equals(managedWorld.getId())) {
+                throw new BusinessException(
+                        String.format(
+                                "Character '%s' is already in world '%s'",
+                                managedChar.getName(),
+                                managedWorld.getWorldName()
+                        )
+                );
+            }
+            managedChar.setGameWorld(managedWorld);
+            gameCharacterDao.saveCharacter(managedChar, em);
+            em.getTransaction().commit();
+            return managedChar;
+
+        } catch (BusinessException be) {
+            // rollback on domain-level problems so we don’t leave the TX open
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw be;
+
+        } catch (PersistenceException pe) {
+            // rollback & wrap DB-level errors
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new DataAccessException("Database down during transfer", pe);
+        }
+    }
+
 }

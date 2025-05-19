@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.AdminController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
@@ -20,6 +19,8 @@
             <Button fx:id="editButton" layoutX="185.0" layoutY="333.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="26.0" prefWidth="94.0" text="Edit" />
             <Button fx:id="deleteButton" layoutX="300.0" layoutY="333.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="26.0" prefWidth="94.0" text="Delete" />
             <Button fx:id="createButton" layoutX="244.0" layoutY="373.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="94.0" text="Create New" />
+            <Button fx:id="reloadButton" layoutX="321.0" layoutY="94.0" mnemonicParsing="false" onAction="#onReloadButtonClick" text="Reload" />
+            <Button fx:id="transferButton" layoutX="394.0" layoutY="20.0" mnemonicParsing="false" onAction="#onTransferButtonClick" prefHeight="26.0" prefWidth="88.0" text="Transfer" />
          </children>
       </AnchorPane>
       <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />
