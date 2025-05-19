@@ -21,8 +21,8 @@
                       value="jdbc:h2:tcp://localhost:9092/h2db;SCHEMA=APP;AUTO_SERVER=TRUE"/>
 
             <!-- The app user you created -->
-            <property name="javax.persistence.jdbc.user" value="APP_USER"/>
-            <property name="javax.persistence.jdbc.password" value="APP_USER"/>
+            <!--<property name="javax.persistence.jdbc.user" value="APP_USER"/>
+            <property name="javax.persistence.jdbc.password" value="APP_USER"/> -->
 
             <!-- Hibernate dialect for H2 -->
             <property name="hibernate.dialect"
