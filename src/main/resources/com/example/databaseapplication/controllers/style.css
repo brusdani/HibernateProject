@@ -1,0 +1,345 @@
+/* General layout */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f0f0f0;
+    -fx-alignment: center;
+}
+/* Username and Password Fields */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #a1a1a1;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* Username field specific */
+#usernameField {
+    -fx-background-color: #e8e8e8;
+}
+#loginField {
+    -fx-background-color: #e8e8e8;
+}
+
+/* Password field specific */
+#passwordField {
+    -fx-background-color: #e8e8e8;
+}
+#emailField {
+    -fx-background-color: #e8e8e8;
+}
+
+/* Button */
+#loginButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#registrationButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#registerNewUserButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#editButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#reloadButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#characterSelectionButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#logoutButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #E57373;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#deleteButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #E57373;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#quitButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #E57373;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#transferButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#backButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#cancelButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#selectButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#createButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#saveButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.button:pressed {
+    -fx-background-color: #2e8b57;
+}
+#titleLabel {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2e3d48; /* Color for the text */
+    -fx-padding: 10px;
+}
+#loginLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-padding: 5px;
+}
+#passwordLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-padding: 5px;
+}
+#emailLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-padding: 5px;
+}
+#fieldLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-padding: 5px;
+}
+#areaLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-padding: 5px;
+}
+#errorLabel{
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: red;
+}
+#infoLabel {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+#welcomeLabel {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+
+#worldLabel {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+#listLabel {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+#listLabel2 {
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+#gameResultLabel{
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+
+#countdownLabel{
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: #2e3d48;
+}
+#connectionLostLabel{
+    -fx-font-family: 'Press Start 2P';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-text-fill: red;
+}
+#readyButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#retryButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+#returnButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+
+#exitButton {
+    -fx-font-family: 'Press Start 2P';
+    -fx-background-color: #E57373;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+    -fx-effect: innershadow(gaussian, #888, 5, 0, 1, 1);
+}
+
+/* Layout adjustments */
+.anchor-pane {
+    -fx-padding: 20px;
+}
+#playerGrid {
+    -fx-background-color: #e0e0e0;
+    -fx-padding: 5px;
+}
+
+#characterBox {
+    -fx-border-color: #555555;       /* Dark gray border color */
+    -fx-border-width: 4px;           /* Thickness of border */
+    -fx-border-radius: 8px;          /* Rounded corners */
+    -fx-background-color: #f0f0f0;   /* Light background */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 2, 2);
+}
+#characterNameLabel{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+
+}
+#characterJobLabel{
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+#characterDescriptionLabel{
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}

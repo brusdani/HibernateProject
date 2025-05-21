@@ -62,7 +62,6 @@ public class GameWorldFormController extends BaseController {
             workingCopy = new GameWorld();
             saveButton.setText("Create");
         }
-
     }
     @FXML
     private void onSaveButtonclick(ActionEvent event) {

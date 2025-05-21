@@ -52,10 +52,6 @@ public class RegistrationController extends BaseController {
     public RegistrationController() {
 
     }
-
-    /**
-     * Initializes the controller, grabbing the App singleton.
-     */
     @FXML
     private void initialize() {
         userService = new UserService(new UserDao());
@@ -71,6 +67,23 @@ public class RegistrationController extends BaseController {
 
         if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
             errorLabel.setText("All fields need to be filled");
+            return;
+        }
+        if (login.length() < 3 || login.length() > 20) {
+            errorLabel.setText("Username must be 3–20 characters long.");
+            return;
+        }
+        if (!login.matches("[A-Za-z0-9_]+")) {
+            errorLabel.setText("Username may only contain letters, digits, and underscores.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            errorLabel.setText("Please enter a valid email address.");
+            return;
+        }
+        if (pwd.length() < 8) {
+            errorLabel.setText("Password must be at least 8 characters.");
             return;
         }
 
@@ -121,14 +134,12 @@ public class RegistrationController extends BaseController {
         );
         executorService.submit(registerTask);
     }
-
-    private void showAlert(Alert.AlertType type, String msg) {
-        Alert a = new Alert(type, msg, ButtonType.OK);
-        a.showAndWait();
-    }
     @FXML
     private void onLoginButtonClick(ActionEvent event) throws IOException {
         sceneController.changeScene(event,"login.fxml");
+    }
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     }
 
 }

@@ -25,7 +25,7 @@ public class GameCharacter {
         this.gameWorld = gameWorld;
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "gameworld_id")
     private GameWorld gameWorld;
 

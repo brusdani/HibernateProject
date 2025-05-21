@@ -3,10 +3,12 @@ package com.example.databaseapplication.controllers;
 import com.example.databaseapplication.HelloApplication;
 import com.example.databaseapplication.dao.GameCharacterDao;
 import com.example.databaseapplication.dao.GameWorldDao;
+import com.example.databaseapplication.dao.UserDao;
 import com.example.databaseapplication.model.GameCharacter;
 import com.example.databaseapplication.model.GameWorld;
 import com.example.databaseapplication.service.GameCharacterService;
 import com.example.databaseapplication.service.GameWorldService;
+import com.example.databaseapplication.service.UserService;
 import com.example.databaseapplication.session.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,6 +46,7 @@ public class GameController extends BaseController {
     private Rectangle overlay;
 
     private GameCharacterService gameCharacterService;
+    private UserService userService;
     private ExecutorService executorService;
     private SceneController sceneController = new SceneController();
 
@@ -55,6 +58,7 @@ public class GameController extends BaseController {
     @FXML
     private void initialize(){
         gameCharacterService = new GameCharacterService(new GameCharacterDao());
+        userService = new UserService(new UserDao());
         executorService = Executors.newSingleThreadExecutor();
 
         currentGameWorld = currentCharacter.getGameWorld();
@@ -106,6 +110,53 @@ public class GameController extends BaseController {
     @FXML
     private void onLogoutButtonClick(ActionEvent event) throws IOException {
         Session.clear();
-        sceneController.changeScene(event,"login.fxml");
+        sceneController.changeScene(event, "login.fxml");
     }
+    @FXML
+    public void onReloadButtonClick(ActionEvent event){
+        loadCharacters();
+    }
+//    @FXML
+//    private void onLogoutButtonClick(ActionEvent event) {
+//        // Build the Task<Void>
+//        Task<Void> logoutTask = new Task<>() {
+//            @Override
+//            protected Void call() throws Exception {
+//                EntityManager em = null;
+//                try {
+//                    em = HelloApplication.createEM();
+//                    userService.logout(Session.getUser(), em);
+//                } finally {
+//                    em.close();
+//                }
+//                return null;
+//            }
+//            @Override
+//            protected void succeeded() {
+//                // clear the in-memory session and go back to login
+//                Session.clear();
+//                try {
+//                    sceneController.changeScene(event, "login.fxml");
+//                } catch (IOException e) {
+//                    LOG.error("Navigation error on logout", e);
+//                }
+//            }
+//            @Override
+//            protected void failed() {
+//                // DB error or other
+//                Throwable ex = getException();
+//                LOG.error("Error during logout", ex);
+//            }
+//        };
+//        handleTaskFailure(logoutTask);
+//        FXUtils.bindUiToTask(
+//                logoutTask,
+//                overlay,
+//                progressIndicator,
+//                List.of(),
+//                List.of(),
+//                null
+//        );
+//        executorService.submit(logoutTask);
+//    }
 }

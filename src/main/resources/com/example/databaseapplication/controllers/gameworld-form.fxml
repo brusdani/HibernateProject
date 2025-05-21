@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.GameWorldFormController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
             <TextField fx:id="worldNameField" layoutX="147.0" layoutY="87.0" prefHeight="26.0" prefWidth="305.0" />
             <TextArea fx:id="descriptionArea" layoutX="146.0" layoutY="159.0" prefHeight="94.0" prefWidth="306.0" />
-            <Label layoutX="147.0" layoutY="62.0" prefHeight="26.0" prefWidth="77.0" text="World name:" />
-            <Label layoutX="147.0" layoutY="132.0" prefHeight="26.0" prefWidth="101.0" text="World description:" />
-            <Button fx:id="saveButton" layoutX="161.0" layoutY="339.0" mnemonicParsing="false" onAction="#onSaveButtonclick" prefHeight="26.0" prefWidth="94.0" text="Save" />
-            <Button fx:id="cancelButton" layoutX="341.0" layoutY="339.0" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="26.0" prefWidth="85.0" text="Cancel" />
-            <Label fx:id="errorLabel" layoutX="131.0" layoutY="277.0" prefHeight="37.0" prefWidth="335.0" />
+            <Label fx:id="fieldLabel" layoutX="147.0" layoutY="62.0" prefHeight="30.0" prefWidth="94.0" stylesheets="@style.css" text="World name:" />
+            <Label fx:id="areaLabel" layoutX="147.0" layoutY="132.0" prefHeight="30.0" prefWidth="135.0" stylesheets="@style.css" text="World description:" />
+            <Button fx:id="saveButton" layoutX="161.0" layoutY="339.0" mnemonicParsing="false" onAction="#onSaveButtonclick" prefHeight="26.0" prefWidth="94.0" stylesheets="@style.css" text="Save" />
+            <Button fx:id="cancelButton" layoutX="341.0" layoutY="339.0" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="26.0" prefWidth="85.0" stylesheets="@style.css" text="Cancel" />
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="131.0" layoutY="277.0" prefHeight="37.0" prefWidth="335.0" stylesheets="@style.css" />
+            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="138.0" layoutY="13.0" prefHeight="26.0" prefWidth="335.0" stylesheets="@style.css" text="World Creation" />
          </children>
       </AnchorPane>
       <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />

@@ -29,6 +29,9 @@ public class User {
     )
     private List<GameCharacter> userCharacters = new ArrayList<>();
 
+    @Column(name = "ACTIVE")
+    private boolean active = false;
+
     @Version
     @Column(name = "VERSION")
     private Integer version;
@@ -94,7 +97,17 @@ public class User {
         userCharacters.remove(gameCharacter);
         gameCharacter.setUser(null);
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setUserCharacters(List<GameCharacter> userCharacters) {
         this.userCharacters = userCharacters;
     }
 }
+

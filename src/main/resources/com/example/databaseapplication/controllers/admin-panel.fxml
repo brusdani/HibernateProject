@@ -10,21 +10,21 @@
 
 <StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.AdminController">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <ListView fx:id="gameWorldPanel" layoutX="186.0" layoutY="126.0" prefHeight="200.0" prefWidth="200.0" />
-            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="186.0" layoutY="34.0" prefHeight="32.0" prefWidth="207.0" text="Admin Panel" />
-            <Button fx:id="logoutButton" layoutX="505.0" layoutY="21.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="18.0" prefWidth="81.0" text="Logout" />
-            <Label layoutX="186.0" layoutY="97.0" prefHeight="18.0" prefWidth="105.0" text="Game World list" />
-            <Button fx:id="editButton" layoutX="185.0" layoutY="333.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="26.0" prefWidth="94.0" text="Edit" />
-            <Button fx:id="deleteButton" layoutX="300.0" layoutY="333.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="26.0" prefWidth="94.0" text="Delete" />
-            <Button fx:id="createButton" layoutX="244.0" layoutY="373.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="94.0" text="Create New" />
-            <Button fx:id="reloadButton" layoutX="321.0" layoutY="94.0" mnemonicParsing="false" onAction="#onReloadButtonClick" text="Reload" />
-            <Button fx:id="transferButton" layoutX="394.0" layoutY="20.0" mnemonicParsing="false" onAction="#onTransferButtonClick" prefHeight="26.0" prefWidth="88.0" text="Transfer" />
-         </children>
-      </AnchorPane>
       <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />
       <ProgressIndicator fx:id="progressIndicator" prefHeight="68.0" prefWidth="46.0" visible="false" />
       <Label fx:id="pleaseWaitLabel" alignment="CENTER" text="PleaseWait" visible="false" StackPane.alignment="CENTER" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <ListView fx:id="gameWorldPanel" layoutX="189.0" layoutY="108.0" prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="185.0" layoutY="17.0" prefHeight="32.0" prefWidth="207.0" stylesheets="@style.css" text="Admin Panel" />
+            <Button fx:id="logoutButton" layoutX="505.0" layoutY="21.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="88.0" stylesheets="@style.css" text="Logout" />
+            <Label fx:id="listLabel" alignment="CENTER" layoutX="192.0" layoutY="80.0" prefHeight="27.0" prefWidth="123.0" stylesheets="@style.css" text="Game World list" />
+            <Button fx:id="editButton" layoutX="192.0" layoutY="308.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="30.0" prefWidth="88.0" stylesheets="@style.css" text="Edit" />
+            <Button fx:id="deleteButton" layoutX="300.0" layoutY="308.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="30.0" prefWidth="88.0" stylesheets="@style.css" text="Delete" />
+            <Button fx:id="createButton" layoutX="242.0" layoutY="355.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="94.0" stylesheets="@style.css" text="Create New" />
+            <Button fx:id="reloadButton" layoutX="321.0" layoutY="79.0" mnemonicParsing="false" onAction="#onReloadButtonClick" prefHeight="26.0" prefWidth="66.0" stylesheets="@style.css" text="Reload" />
+            <Button fx:id="transferButton" layoutX="406.0" layoutY="22.0" mnemonicParsing="false" onAction="#onTransferButtonClick" prefHeight="26.0" prefWidth="88.0" stylesheets="@style.css" text="Transfer" />
+         </children>
+      </AnchorPane>
    </children>
 </StackPane>

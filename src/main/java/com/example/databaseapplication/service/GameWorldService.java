@@ -46,7 +46,6 @@ public class GameWorldService {
         try {
             em.getTransaction().begin();
 
-            // 1) Check that the row is still there
             GameWorld currentlyInDb = em.find(GameWorld.class, detachedCopy.getId());
             if (currentlyInDb == null) {
                 em.getTransaction().rollback();
@@ -54,7 +53,6 @@ public class GameWorldService {
                         "This world was deleted by someone else."
                 );
             }
-            // merge the detached copy (which carries its old @Version)
             GameWorld managed = em.merge(detachedCopy);
             em.getTransaction().commit();
             return managed;

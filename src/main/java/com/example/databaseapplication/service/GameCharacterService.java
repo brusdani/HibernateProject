@@ -116,7 +116,7 @@ public class GameCharacterService {
             );
             if (managedWorld == null) {
                 throw new BusinessException(
-                        "Target world not found (id=" + gameWorld.getId() + ")"
+                        "Target world not found (name=" + gameWorld.getWorldName() + ")"
                 );
             }
             if (managedChar.getGameWorld().getId().equals(managedWorld.getId())) {
@@ -134,14 +134,12 @@ public class GameCharacterService {
             return managedChar;
 
         } catch (BusinessException be) {
-            // rollback on domain-level problems so we don’t leave the TX open
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             throw be;
 
         } catch (PersistenceException pe) {
-            // rollback & wrap DB-level errors
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }

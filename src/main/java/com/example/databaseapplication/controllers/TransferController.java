@@ -49,7 +49,7 @@ public class TransferController extends BaseController {
     private ExecutorService executorService;
 
     private SceneController sceneController = new SceneController();
-    private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TransferController.class);
 
 
     @FXML
@@ -158,6 +158,7 @@ public class TransferController extends BaseController {
         Task<Void> transferTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
+                Thread.sleep(3000);
                 EntityManager em = null;
                 try {
                     // call your service; change to match your method signature

@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,10 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Hello!");
         stage.setScene(scene);
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            Platform.exit();      // Shutdown JavaFX runtime
+            System.exit(0);       // Stop JVM entirely
+        });
         stage.show();
     }
 

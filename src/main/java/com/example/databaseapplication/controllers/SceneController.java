@@ -22,7 +22,7 @@ public class SceneController {
     public void changeScene(ActionEvent event, String sceneName) throws IOException {
         setStage(event);
         scene = new Scene(FXMLLoader.load(getClass().getResource(sceneName)));
-        scene.getStylesheets().add(String.valueOf(getClass().getResource("/com/example/battleshipsdemo/client/style.css")));
+        scene.getStylesheets().add(String.valueOf(getClass().getResource("/com/example/databaseapplication/style.css")));
         scene.getRoot().requestFocus();
         stage.setScene(scene);
         stage.show();
@@ -30,7 +30,7 @@ public class SceneController {
     public void changeScene(Stage stage, String sceneName) throws IOException {
         this.stage = stage;
         scene = new Scene(FXMLLoader.load(getClass().getResource(sceneName)));
-        scene.getStylesheets().add(String.valueOf(getClass().getResource("/com/example/battleshipsdemo/client/style.css")));
+        scene.getStylesheets().add(String.valueOf(getClass().getResource("/com/example/databaseapplication/style.css")));
         scene.getRoot().requestFocus();
         stage.setScene(scene);
         stage.show();

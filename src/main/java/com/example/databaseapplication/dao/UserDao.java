@@ -1,5 +1,6 @@
 package com.example.databaseapplication.dao;
 
+import com.example.databaseapplication.model.GameCharacter;
 import com.example.databaseapplication.model.User;
 
 import javax.persistence.EntityManager;
@@ -37,6 +38,15 @@ public class UserDao {
                 .getResultStream()
                 .findFirst()
                 .orElse(null);
+    }
+    public void deleteUser(User user, EntityManager em) {
+        User managed = em.find(User.class, user.getId());
+        if (managed != null) {
+            em.remove(managed);
+        }
+    }
+    public User getUserById(Long id, EntityManager em) {
+        return em.find(User.class, id);
     }
 
 

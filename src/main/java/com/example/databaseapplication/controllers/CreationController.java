@@ -169,11 +169,6 @@ public class CreationController extends BaseController {
         executorService.submit(loadTask);
     }
     @FXML
-    private void onLogoutButtonClick(ActionEvent event) throws IOException {
-        Session.clear();
-        sceneController.changeScene(event,"login.fxml");
-    }
-    @FXML
     private void onReloadButtonClick(ActionEvent event){
         loadGameWorlds();
     }

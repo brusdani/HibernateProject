@@ -8,21 +8,21 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databaseapplication.controllers.SelectionController">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="61.0" layoutY="21.0" prefHeight="25.0" prefWidth="466.0" text="Welcome" />
-            <Label alignment="CENTER" layoutX="61.0" layoutY="56.0" prefHeight="25.0" prefWidth="466.0" text="Select your hero" />
-            <Button fx:id="createButton" layoutX="230.0" layoutY="373.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="183.0" text="Create new hero" />
-            <ListView fx:id="characterPanel" layoutX="18.0" layoutY="100.0" orientation="HORIZONTAL" prefHeight="222.0" prefWidth="569.0" />
-            <Button fx:id="selectButton" layoutX="119.0" layoutY="332.0" mnemonicParsing="false" onAction="#onSelectButtonClick" prefHeight="26.0" prefWidth="183.0" text="Select hero" />
-            <Button fx:id="deleteButton" layoutX="343.0" layoutY="332.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="26.0" prefWidth="183.0" text="Delete hero" />
-            <Button layoutX="536.0" layoutY="9.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout" />
-         </children>
-      </AnchorPane>
       <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />
       <ProgressIndicator fx:id="progressIndicator" prefHeight="68.0" prefWidth="46.0" visible="false" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="61.0" layoutY="10.0" prefHeight="30.0" prefWidth="466.0" stylesheets="@style.css" text="Welcome" />
+            <Label fx:id="listLabel" alignment="CENTER" layoutX="61.0" layoutY="64.0" prefHeight="25.0" prefWidth="466.0" stylesheets="@style.css" text="Select your hero" />
+            <Button fx:id="createButton" layoutX="231.0" layoutY="360.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="30.0" prefWidth="144.0" stylesheets="@style.css" text="Create new hero" />
+            <ListView fx:id="characterPanel" layoutX="18.0" layoutY="100.0" orientation="HORIZONTAL" prefHeight="222.0" prefWidth="569.0" />
+            <Button fx:id="selectButton" layoutX="61.0" layoutY="330.0" mnemonicParsing="false" onAction="#onSelectButtonClick" prefHeight="30.0" prefWidth="159.0" stylesheets="@style.css" text="Select hero" />
+            <Button fx:id="deleteButton" layoutX="383.0" layoutY="330.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="30.0" prefWidth="144.0" stylesheets="@style.css" text="Delete hero" />
+            <Button fx:id="logoutButton" layoutX="536.0" layoutY="9.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" stylesheets="@style.css" text="Logout" />
+            <Button fx:id="profileButton" layoutX="455.0" layoutY="13.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="26.0" prefWidth="58.0" text="Profile" />
+         </children>
+      </AnchorPane>
    </children>
 </StackPane>

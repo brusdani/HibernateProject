@@ -16,12 +16,12 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label alignment="CENTER" layoutX="161.0" layoutY="14.0" prefHeight="26.0" prefWidth="283.0" text="CharacterCreation" />
+            <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="158.0" layoutY="14.0" prefHeight="26.0" prefWidth="283.0" stylesheets="@style.css" text="CharacterCreation" />
             <TextField fx:id="nameField" layoutX="209.0" layoutY="78.0" prefHeight="26.0" prefWidth="186.0" />
-            <Button fx:id="createButton" layoutX="181.0" layoutY="333.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Create" />
-            <Label layoutX="210.0" layoutY="52.0" prefHeight="18.0" prefWidth="122.0" text="Enter character name:" />
-            <Button fx:id="backButton" layoutX="332.0" layoutY="333.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="26.0" prefWidth="98.0" text="Back" />
-            <Label fx:id="infoLabel" alignment="CENTER" layoutX="26.0" layoutY="285.0" prefHeight="36.0" prefWidth="547.0" />
+            <Button fx:id="createButton" layoutX="181.0" layoutY="333.0" mnemonicParsing="false" onAction="#onCreateButtonClick" prefHeight="26.0" prefWidth="98.0" stylesheets="@style.css" text="Create" />
+            <Label fx:id="fieldLabel" layoutX="210.0" layoutY="52.0" prefHeight="30.0" prefWidth="151.0" stylesheets="@style.css" text="Enter character name:" />
+            <Button fx:id="backButton" layoutX="332.0" layoutY="333.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="26.0" prefWidth="98.0" stylesheets="@style.css" text="Back" />
+            <Label fx:id="infoLabel" alignment="CENTER" layoutX="26.0" layoutY="285.0" prefHeight="36.0" prefWidth="547.0" stylesheets="@style.css" />
             <ListView fx:id="gameWorldPanel" layoutX="344.0" layoutY="167.0" prefHeight="100.0" prefWidth="114.0" />
             <VBox layoutX="161.0" layoutY="161.0" prefHeight="100.0" prefWidth="100.0" spacing="10.0">
                <children>
@@ -34,8 +34,8 @@
                   <RadioButton mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Rogue" toggleGroup="$characterJobChoice" />
                </children>
             </VBox>
-            <Label alignment="CENTER" layoutX="158.0" layoutY="126.0" prefHeight="26.0" prefWidth="283.0" text="Select class and the game world!" />
-            <Button fx:id="reloadButton" layoutX="404.0" layoutY="139.0" mnemonicParsing="false" onAction="#onReloadButtonClick" prefHeight="26.0" prefWidth="58.0" text="Reload" />
+            <Label fx:id="listLabel" alignment="CENTER" layoutX="160.0" layoutY="112.0" prefHeight="26.0" prefWidth="283.0" stylesheets="@style.css" text="Select class and the game world!" />
+            <Button fx:id="reloadButton" layoutX="412.0" layoutY="138.0" mnemonicParsing="false" onAction="#onReloadButtonClick" prefHeight="26.0" prefWidth="61.0" stylesheets="@style.css" text="Reload" />
          </children>
       </AnchorPane>
       <Rectangle fx:id="overlay" arcHeight="5.0" arcWidth="5.0" fill="#464646" height="400.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" visible="false" width="600.0" />
