@@ -38,6 +38,8 @@ public class GameWorldFormController extends BaseController {
     private ProgressIndicator progressIndicator;
     @FXML
     private Rectangle overlay;
+    @FXML
+    private Label welcomeLabel;
 
     private GameWorld workingCopy;
     private boolean editMode;
@@ -53,6 +55,7 @@ public class GameWorldFormController extends BaseController {
         GameWorld selected = Session.getCurrentGameWorld();
         if (selected != null){
             editMode = true;
+            welcomeLabel.setText("Edit world");
             workingCopy = selected;
             worldNameField.setText(selected.getWorldName());
             descriptionArea.setText(selected.getWorldDescription());
@@ -70,6 +73,14 @@ public class GameWorldFormController extends BaseController {
         workingCopy.setWorldDescription(descriptionArea.getText().trim());
         if (workingCopy.getWorldName().isEmpty()) {
             errorLabel.setText("Name cannot be blank");
+            return;
+        }
+        if (workingCopy.getWorldName().length() < 3 || workingCopy.getWorldName().length() > 12) {
+            errorLabel.setText("Username must be 3–12 characters long.");
+            return;
+        }
+        if (!workingCopy.getWorldName().matches("[A-Za-z0-9_]+")) {
+            errorLabel.setText("Username may only contain letters, digits, and underscores.");
             return;
         }
         Task<GameWorld> saveTask = new Task<>() {
@@ -96,6 +107,7 @@ public class GameWorldFormController extends BaseController {
                 GameWorld result = getValue();
                 if (result != null) {
                     try {
+                        Session.setCurrentGameWorld(null);
                         sceneController.changeScene(event, "admin-panel.fxml");
                     } catch (IOException ex) {
                         LOG.error("Navigation error after save", ex);

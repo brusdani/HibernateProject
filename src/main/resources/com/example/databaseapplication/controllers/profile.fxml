@@ -19,7 +19,7 @@
             <Label fx:id="loginLabel" layoutX="155.0" layoutY="41.0" prefHeight="38.0" prefWidth="74.0" stylesheets="@style.css" text="username" />
             <Label fx:id="passwordLabel" layoutX="155.0" layoutY="111.0" prefHeight="30.0" prefWidth="74.0" stylesheets="@style.css" text="password" />
             <Label fx:id="emailLabel" layoutX="151.0" layoutY="175.0" prefHeight="18.0" prefWidth="82.0" stylesheets="@style.css" text="email" />
-            <Label fx:id="errorLabel" alignment="CENTER" layoutX="14.0" layoutY="250.0" prefHeight="37.0" prefWidth="580.0" stylesheets="@style.css" />
+            <Label fx:id="infoLabel" alignment="CENTER" layoutX="14.0" layoutY="250.0" prefHeight="37.0" prefWidth="580.0" stylesheets="@style.css" />
             <PasswordField fx:id="passwordField" layoutX="154.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" stylesheets="@style.css" />
             <Button fx:id="saveButton" layoutX="192.0" layoutY="333.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="26.0" prefWidth="82.0" text="Save" />
             <Button fx:id="cancelButton" layoutX="345.0" layoutY="333.0" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="26.0" prefWidth="82.0" text="Cancel" />

@@ -45,7 +45,7 @@ public class HelloApplication extends Application {
         String fxml = dbUp ? "controllers/login.fxml" : "controllers/dbdown.fxml";
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Hello!");
+        stage.setTitle("Database application");
         stage.setScene(scene);
         stage.setOnCloseRequest((WindowEvent event) -> {
             Platform.exit();      // Shutdown JavaFX runtime

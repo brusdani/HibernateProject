@@ -65,6 +65,7 @@ public class CreationController extends BaseController {
 
         createButton.disableProperty().bind(
                 gameWorldPanel.getSelectionModel().selectedItemProperty().isNull());
+        nameField.requestFocus();
     }
     @FXML
     private void onCreateButtonClick(ActionEvent event) {
@@ -73,6 +74,15 @@ public class CreationController extends BaseController {
             infoLabel.setText("You must enter character name");
             return;
         }
+        if (characterName.length() < 3 || characterName.length() > 12) {
+            infoLabel.setText("Username must be 3–12 characters long.");
+            return;
+        }
+        if (!characterName.matches("[A-Za-z0-9_]+")) {
+            infoLabel.setText("Username may only contain letters, digits, and underscores.");
+            return;
+        }
+
         RadioButton selectedRb = (RadioButton) characterJobChoice.getSelectedToggle();
         final CharacterJob job = CharacterJob.valueOf(selectedRb.getText().toUpperCase());
 
