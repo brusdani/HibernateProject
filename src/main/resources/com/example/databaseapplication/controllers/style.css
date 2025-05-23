@@ -213,14 +213,14 @@
 }
 #errorLabel{
     -fx-font-family: 'Press Start 2P';
-    -fx-font-size: 18px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-alignment: center;
     -fx-text-fill: red;
 }
 #infoLabel {
     -fx-font-family: 'Press Start 2P';
-    -fx-font-size: 18px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-alignment: center;
     -fx-text-fill: #2e3d48;

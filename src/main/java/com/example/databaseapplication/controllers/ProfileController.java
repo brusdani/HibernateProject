@@ -91,6 +91,7 @@ public class ProfileController extends BaseController {
                 @Override
                 protected void succeeded() {
                     LOG.info("User deleted");
+                    Session.clear();
                     try {
                         sceneController.changeScene(event, "login.fxml");
                     } catch (IOException e) {
