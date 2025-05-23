@@ -21,6 +21,7 @@
             <Label fx:id="listLabel" layoutX="318.0" layoutY="111.0" prefHeight="18.0" prefWidth="192.0" stylesheets="@style.css" text="Characters in the world" />
             <Button fx:id="characterSelectionButton" layoutX="213.0" layoutY="362.0" mnemonicParsing="false" onAction="#onCharacterSelectionButtonClick" prefHeight="30.0" prefWidth="174.0" stylesheets="@style.css" text="Character Selection" />
             <Button fx:id="logoutButton" layoutX="526.0" layoutY="14.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="30.0" prefWidth="66.0" stylesheets="@style.css" text="Logout" />
+            <Button fx:id="reloadButton" layoutX="487.0" layoutY="106.0" mnemonicParsing="false" onAction="#onReloadButtonClick" prefHeight="26.0" prefWidth="61.0" stylesheets="@style.css" text="Reload" />
          </children>
       </AnchorPane>
    </children>

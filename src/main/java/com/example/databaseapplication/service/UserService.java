@@ -8,6 +8,7 @@ import com.example.databaseapplication.model.User;
 import com.example.databaseapplication.model.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -25,7 +26,8 @@ public class UserService {
     public User registerNewUser(String login, String password, String email, EntityManager em) {
         User user = new User();
         user.setLogin(login);
-        user.setPassword(password);
+        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+        user.setPassword(hashed);
         user.setEmail(email);
         user.setType(UserType.REGULAR);
         user.setActive(false);
@@ -55,7 +57,7 @@ public class UserService {
                 LOG.info("Username doesn't exist");
                 return null;    // no such username
             }
-            if (!user.getPassword().equals(candidatePassword)) {
+            if (!BCrypt.checkpw(candidatePassword, user.getPassword())) {
                 return null;
             }
             if (user.isActive()) {
@@ -94,7 +96,8 @@ public class UserService {
             }
             String newPassword = user.getPassword();
             if (newPassword != null && !newPassword.isEmpty()) {
-                managed.setPassword(newPassword);
+                String rehashed = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+                managed.setPassword(rehashed);
             }
             User updated = userDao.saveUser(managed, em);
 
@@ -108,8 +111,6 @@ public class UserService {
             throw new DataAccessException("Database error during user update", pe);
         }
     }
-
-
     public void deleteUser(User user, EntityManager em) {
         try {
             em.getTransaction().begin();

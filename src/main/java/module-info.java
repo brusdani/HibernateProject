@@ -13,6 +13,7 @@ module com.example.databaseapplication {
     // Logging (SLF4J + Logback)
     requires org.slf4j;
     requires ch.qos.logback.classic;
+    requires jbcrypt;
 
     // Open packages for reflective access
     opens com.example.databaseapplication to javafx.fxml;

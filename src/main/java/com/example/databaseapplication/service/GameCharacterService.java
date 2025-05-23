@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class GameCharacterService {
@@ -27,10 +29,17 @@ public class GameCharacterService {
     public GameCharacter createNewCharacter(String nickname,
                                             CharacterJob characterJob,
                                             GameWorld world,
+                                            User currentUser,
                                             EntityManager em) {
 
         try {
             em.getTransaction().begin();
+            if (gameCharacterDao.countByUser(currentUser, em) >= 4){
+                LOG.info("Character limit reached");
+                throw new BusinessException(
+                  "You have reached the character limit"
+                );
+            }
 
             GameWorld managedWorld = em.find(GameWorld.class, world.getId());
             if (managedWorld == null) {
@@ -97,17 +106,22 @@ public class GameCharacterService {
             throw new DataAccessException("Database down", ex);
         }
     }
-    public GameCharacter transferCharacter(GameCharacter gameCharacter, GameWorld gameWorld, EntityManager em){
+    public GameCharacter transferCharacter(GameCharacter detachedCopy, GameWorld gameWorld, EntityManager em){
         try {
             em.getTransaction().begin();
 
-            GameCharacter managedChar = em.find(
-                    GameCharacter.class,
-                    gameCharacter.getId()
-            );
+            GameCharacter currentlyInDb = em.find(GameCharacter.class, detachedCopy.getId());
+            if (currentlyInDb == null) {
+                em.getTransaction().rollback();
+                throw new ConcurrentModificationException(
+                        "This character was deleted."
+                );
+            }
+            GameCharacter managedChar = em.merge(detachedCopy);
+
             if (managedChar == null) {
                 throw new BusinessException(
-                        "Character not found (id=" + gameCharacter.getId() + ")"
+                        "Character not found (id=" + detachedCopy.getId() + ")"
                 );
             }
             GameWorld managedWorld = em.find(
@@ -133,6 +147,12 @@ public class GameCharacterService {
             em.getTransaction().commit();
             return managedChar;
 
+        } catch (OptimisticLockException ole) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw new ConcurrentModificationException(
+                    "This character was transfered by someone else.",
+                    ole
+            );
         } catch (BusinessException be) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();

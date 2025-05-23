@@ -102,6 +102,7 @@ public class SelectionController extends BaseController {
             protected void succeeded() {
                 characterPanel.refresh();
                 loadCharacters();
+                LOG.info("Character deleted");
             }
             @Override
             protected void failed() {
@@ -143,8 +144,9 @@ public class SelectionController extends BaseController {
             protected void succeeded() {
                 ObservableList<GameCharacter> items = getValue();
                 characterPanel.setItems(items);
-                createButton.setDisable(items.size() >= 3);
+                createButton.setDisable(items.size() >= 4);
                 welcomeLabel.setText("Welcome " + Session.getUser().getLogin());
+                LOG.info("Characters loaded");
             }
 
             @Override

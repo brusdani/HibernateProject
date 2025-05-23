@@ -153,9 +153,6 @@ public class GameController extends BaseController {
 //                logoutTask,
 //                overlay,
 //                progressIndicator,
-//                List.of(),
-//                List.of(),
-//                null
 //        );
 //        executorService.submit(logoutTask);
 //    }

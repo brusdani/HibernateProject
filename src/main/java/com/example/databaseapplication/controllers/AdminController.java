@@ -149,6 +149,7 @@ public class AdminController extends BaseController {
                 // This runs on the FX thread:
                 gameWorldPanel.refresh();
                 loadGameWorlds();   // reload list after delete
+                LOG.info("World Deleted");
             }
             @Override
             protected void failed() {

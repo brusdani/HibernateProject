@@ -63,7 +63,7 @@ public class ProfileController extends BaseController {
 
         User currentUser = Session.getUser();
         usernameField.setText(currentUser.getLogin());
-        passwordField.setText(currentUser.getPassword());
+        //passwordField.setText(currentUser.getPassword());
         emailField.setText(currentUser.getEmail());
     }
 
@@ -90,6 +90,7 @@ public class ProfileController extends BaseController {
                 }
                 @Override
                 protected void succeeded() {
+                    LOG.info("User deleted");
                     try {
                         sceneController.changeScene(event, "login.fxml");
                     } catch (IOException e) {
@@ -118,27 +119,12 @@ public class ProfileController extends BaseController {
         final String email = emailField.getText().trim();
         infoLabel.setText("");
 
-        if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
-            infoLabel.setText("All fields need to be filled");
-            return;
-        }
-        if (login.length() < 3 || login.length() > 20) {
-            infoLabel.setText("Username must be 3–20 characters long.");
-            return;
-        }
-        if (!login.matches("[A-Za-z0-9_]+")) {
-            infoLabel.setText("Username may only contain letters, digits, and underscores.");
+        String validationError = validateInput(login, pwd, email);
+        if (validationError != null) {
+            infoLabel.setText(validationError);
             return;
         }
 
-        if (!isValidEmail(email)) {
-            infoLabel.setText("Please enter a valid email address.");
-            return;
-        }
-        if (pwd.length() < 8) {
-            infoLabel.setText("Password must be at least 8 characters.");
-            return;
-        }
         User sessionUser = Session.getUser();
         if (sessionUser == null) return;
 
@@ -146,7 +132,11 @@ public class ProfileController extends BaseController {
         userCopy.setId(sessionUser.getId());
         userCopy.setLogin(login);
         userCopy.setEmail(email);
-        userCopy.setPassword(pwd);
+        if(!pwd.isEmpty()){
+            userCopy.setPassword(pwd);
+        }
+
+
         Task<User> saveTask = new Task<>() {
             @Override
             protected User call() throws Exception {
@@ -190,7 +180,22 @@ public class ProfileController extends BaseController {
         executorService.submit(saveTask);
     }
 
-    private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    private String validateInput(String login, String pwd, String email) {
+        if (login.isEmpty() || email.isEmpty()) {
+            return "All fields apart from password need to be filled";
+        }
+        if (login.length() < 3 || login.length() > 20) {
+            return "Username must be 3–20 characters long.";
+        }
+        if (!login.matches("[A-Za-z0-9_]+")) {
+            return "Username may only contain letters, digits, and underscores.";
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            return "Please enter a valid email address.";
+        }
+        if (!pwd.isEmpty() && pwd.length() < 8) {
+            return "Password must be at least 8 characters.";
+        }
+        return null;
     }
 }

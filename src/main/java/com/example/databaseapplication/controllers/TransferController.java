@@ -155,6 +155,7 @@ public class TransferController extends BaseController {
             return;
         }
         infoLabel.setText("");
+        GameCharacter characterCopy = selectedChar;
         Task<Void> transferTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
@@ -164,7 +165,7 @@ public class TransferController extends BaseController {
                     // call your service; change to match your method signature
                     em = HelloApplication.createEM();
                     gameCharacterService.transferCharacter(
-                            selectedChar,
+                            characterCopy,
                             selectedWorld,
                             em
                     );
@@ -177,6 +178,7 @@ public class TransferController extends BaseController {
             @Override
             protected void succeeded() {
                 infoLabel.setText("Transfer successful!");
+                LOG.info("Transfer successful");
                 loadCharacters();
                 loadGameWorlds();
             }
@@ -209,6 +211,12 @@ public class TransferController extends BaseController {
     @FXML
     private void onBackButtonClick(ActionEvent event) throws IOException {
         sceneController.changeScene(event, "admin-panel.fxml");
+    }
+    @FXML
+    private void onReloadButtonClick(){
+        loadCharacters();
+        loadGameWorlds();
+        LOG.info("Lists reloaded");
     }
 
 }

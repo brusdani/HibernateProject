@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 
@@ -15,7 +17,6 @@ public class PlayerCharacterController {
     private Label characterNameLabel;
     @FXML
     private Label characterJobLabel;
-
 
 
     public void setCharacter(GameCharacter character) {

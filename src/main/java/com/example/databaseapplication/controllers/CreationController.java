@@ -66,23 +66,16 @@ public class CreationController extends BaseController {
         createButton.disableProperty().bind(
                 gameWorldPanel.getSelectionModel().selectedItemProperty().isNull());
         nameField.requestFocus();
+
     }
     @FXML
     private void onCreateButtonClick(ActionEvent event) {
         final String characterName = nameField.getText().trim();
-        if (characterName.isEmpty()) {
-            infoLabel.setText("You must enter character name");
+        String error = validateCharacterName(characterName);
+        if (error != null) {
+            infoLabel.setText(error);
             return;
         }
-        if (characterName.length() < 3 || characterName.length() > 12) {
-            infoLabel.setText("Username must be 3–12 characters long.");
-            return;
-        }
-        if (!characterName.matches("[A-Za-z0-9_]+")) {
-            infoLabel.setText("Username may only contain letters, digits, and underscores.");
-            return;
-        }
-
         RadioButton selectedRb = (RadioButton) characterJobChoice.getSelectedToggle();
         final CharacterJob job = CharacterJob.valueOf(selectedRb.getText().toUpperCase());
 
@@ -101,7 +94,7 @@ public class CreationController extends BaseController {
                 try {
                     em = HelloApplication.createEM();
                     return gameCharacterService.createNewCharacter(
-                            characterName, job, selectedWorld, em
+                            characterName, job, selectedWorld, Session.getUser(), em
                     );
                 } finally {
                     if (em != null) em.close();
@@ -113,6 +106,7 @@ public class CreationController extends BaseController {
                 if (created != null) {
                     try {
                         sceneController.changeScene(event, "character-selection.fxml");
+                        LOG.info("Character was created");
                     } catch (IOException ex) {
                         LOG.error("Navigation error after create", ex);
                         infoLabel.setText("Unexpected navigation error");
@@ -181,6 +175,19 @@ public class CreationController extends BaseController {
     @FXML
     private void onReloadButtonClick(ActionEvent event){
         loadGameWorlds();
+    }
+
+    private String validateCharacterName(String name) {
+        if (name == null || name.isEmpty()) {
+            return "You must enter character name";
+        }
+        if (name.length() < 3 || name.length() > 12) {
+            return "Character name must be 3–12 characters long.";
+        }
+        if (!name.matches("[A-Za-z0-9_]+")) {
+            return "Character name may only contain letters, digits, and underscores.";
+        }
+        return null;
     }
 
 

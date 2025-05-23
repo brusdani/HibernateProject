@@ -83,6 +83,7 @@ public class LoginController extends BaseController {
                         String fxml = (authenticated.getType() == UserType.REGULAR)
                                 ? "character-selection.fxml"
                                 : "admin-panel.fxml";
+                        LOG.info("Logged in");
                         sceneController.changeScene(event, fxml);
                     } catch (IOException ex) {
                         errorLabel.setText("Unexpected navigation error");
@@ -93,7 +94,7 @@ public class LoginController extends BaseController {
             }
             @Override
             protected void failed() {
-                errorLabel.setText("Task hasn't gone through");
+                errorLabel.setText("Login hasn't gone through");
             }
         };
         handleTaskFailure(loginTask);

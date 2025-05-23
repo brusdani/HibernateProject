@@ -65,28 +65,11 @@ public class RegistrationController extends BaseController {
         final String email = emailField.getText().trim();
         errorLabel.setText("");
 
-        if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
-            errorLabel.setText("All fields need to be filled");
+        String error = validateRegistration(login, pwd, email);
+        if (error != null) {
+            errorLabel.setText(error);
             return;
         }
-        if (login.length() < 3 || login.length() > 20) {
-            errorLabel.setText("Username must be 3–20 characters long.");
-            return;
-        }
-        if (!login.matches("[A-Za-z0-9_]+")) {
-            errorLabel.setText("Username may only contain letters, digits, and underscores.");
-            return;
-        }
-
-        if (!isValidEmail(email)) {
-            errorLabel.setText("Please enter a valid email address.");
-            return;
-        }
-        if (pwd.length() < 8) {
-            errorLabel.setText("Password must be at least 8 characters.");
-            return;
-        }
-
         Task<User> registerTask = new Task<>() {
             @Override
             protected User call() throws Exception {
@@ -107,6 +90,7 @@ public class RegistrationController extends BaseController {
                             "User registered successfully!",
                             ButtonType.OK);
                     info.showAndWait();
+                    LOG.info("Registration successful");
                     try {
                         sceneController.changeScene(event, "login.fxml");
                     } catch (Exception ex) {
@@ -119,6 +103,7 @@ public class RegistrationController extends BaseController {
             @Override
             protected void failed() {
                 Throwable ex = getException();
+                LOG.info("Registration failed");
                 if (!(ex instanceof DataAccessException)) {
                     errorLabel.setText("Registration error: " + ex.getMessage());
                 }
@@ -140,6 +125,24 @@ public class RegistrationController extends BaseController {
     }
     private boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
+    private String validateRegistration(String login, String pwd, String email) {
+        if (login.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
+            return "All fields need to be filled";
+        }
+        if (login.length() < 3 || login.length() > 20) {
+            return "Username must be 3–20 characters long.";
+        }
+        if (!login.matches("[A-Za-z0-9_]+")) {
+            return "Username may only contain letters, digits, and underscores.";
+        }
+        if (!isValidEmail(email)) {
+            return "Please enter a valid email address.";
+        }
+        if (pwd.length() < 8) {
+            return "Password must be at least 8 characters.";
+        }
+        return null;
     }
 
 }

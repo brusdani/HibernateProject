@@ -71,16 +71,9 @@ public class GameWorldFormController extends BaseController {
         errorLabel.setText("");
         workingCopy.setWorldName(worldNameField.getText().trim());
         workingCopy.setWorldDescription(descriptionArea.getText().trim());
-        if (workingCopy.getWorldName().isEmpty()) {
-            errorLabel.setText("Name cannot be blank");
-            return;
-        }
-        if (workingCopy.getWorldName().length() < 3 || workingCopy.getWorldName().length() > 12) {
-            errorLabel.setText("Username must be 3–12 characters long.");
-            return;
-        }
-        if (!workingCopy.getWorldName().matches("[A-Za-z0-9_]+")) {
-            errorLabel.setText("Username may only contain letters, digits, and underscores.");
+        String error = validateWorldName(workingCopy.getWorldName());
+        if (error != null) {
+            errorLabel.setText(error);
             return;
         }
         Task<GameWorld> saveTask = new Task<>() {
@@ -109,6 +102,7 @@ public class GameWorldFormController extends BaseController {
                     try {
                         Session.setCurrentGameWorld(null);
                         sceneController.changeScene(event, "admin-panel.fxml");
+                        LOG.info("Gameworld saved");
                     } catch (IOException ex) {
                         LOG.error("Navigation error after save", ex);
                         errorLabel.setText("Could not switch back to admin panel");
@@ -142,6 +136,18 @@ public class GameWorldFormController extends BaseController {
     private void onCancelButtonClick(ActionEvent event) throws IOException {
             Session.setCurrentGameWorld(null);
             sceneController.changeScene(event,"admin-panel.fxml");
+    }
+    private String validateWorldName(String name) {
+        if (name.isEmpty()) {
+            return "Name cannot be blank";
+        }
+        if (name.length() < 3 || name.length() > 12) {
+            return "Name must be 3–12 characters long.";
+        }
+        if (!name.matches("[A-Za-z0-9_]+")) {
+            return "Name may only contain letters, digits, and underscores.";
+        }
+        return null;
     }
 
 
