@@ -48,15 +48,13 @@ public class HelloApplication extends Application {
         stage.setTitle("Database application");
         stage.setScene(scene);
         stage.setOnCloseRequest((WindowEvent event) -> {
-            Platform.exit();      // Shutdown JavaFX runtime
-            System.exit(0);       // Stop JVM entirely
+            Platform.exit();
         });
         stage.show();
     }
 
     public static void main(String[] args) {
         launch();
-        LOG.info("Application terminated.");
     }
     @Override
     public void stop() {

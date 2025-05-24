@@ -2,6 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>Maven Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example</groupId>
@@ -53,6 +62,13 @@
         <artifactId>logback-classic</artifactId>
         <version>1.3.5</version>
       </dependency>
+
+    <!-- bcrypt password‐hashing library -->
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
+    </dependency>
 
 <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -106,7 +122,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.example.databaseapplication/com.example.databaseapplication.HelloApplication</mainClass>
+              <mainClass>com.example.databaseapplication/com.example.databaseapplication.Launcher</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -123,7 +139,30 @@
           </execution>
         </executions>
       </plugin>
-
+      <!-- your existing compiler & javafx plugins -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <!-- prevent Shade from rewriting your pom -->
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <!-- no “/” here, just your main class FQN -->
+                  <mainClass>com.example.databaseapplication.Launcher</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
